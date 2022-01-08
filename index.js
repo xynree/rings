@@ -20,7 +20,6 @@ class Ring {
         event.target.classList.remove("bg-gray-200");
       });
 
-      innerRing.addEventListener("drag", function (event) {}, false);
 
       innerRing.addEventListener("dragstart", (event) => {
         let dragShadow = event.target.cloneNode(true);
@@ -33,6 +32,7 @@ class Ring {
       });
 
       innerRing.addEventListener("dragend", (event) => {
+        event.preventDefault
         dragEndX = event.screenX;
         dragEndY = event.screenY;
         event.target.classList.remove("bg-green-200");
@@ -47,8 +47,6 @@ class Ring {
         }
       });
     };
-
-    this.findDiam = (posX, posY) => Math.sqrt(posX**2 + posY**2)*2
 
     this.attachDocListeners = function () {
       document.addEventListener(
@@ -83,10 +81,9 @@ class Ring {
     };
 
     this.createInnerRing = function (value) {
-      console.log(value)
       let outerRing = document.querySelector("#oring");
       let newRing = document.createElement("div");
-      newRing.innerText = "+";
+      newRing.innerText = "";
       newRing.classList.add(
         "absolute",
         "rounded-full",
@@ -103,6 +100,7 @@ class Ring {
       outerRing.appendChild(newRing);
     };
 
+    this.findDiam = (posX, posY) => Math.sqrt(posX**2 + posY**2)*2
     this.ringTitle = 'Ring Title'
   }
 }
@@ -111,7 +109,7 @@ function render() {
   let defRing = new Ring();
   defRing.setup();
 
-  console.log("refreshed");
+  console.log("loaded");
 }
 
 document.addEventListener("DOMContentLoaded", (event) => {
