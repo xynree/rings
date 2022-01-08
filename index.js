@@ -1,8 +1,8 @@
 class Ring {
-  constructor() {
+  constructor() {    
     this.setup = function () {
       this.attachInnerRingListeners();
-      this.attachListeners();
+      this.attachDocListeners();
     };
 
     this.attachInnerRingListeners = function () {
@@ -30,14 +30,13 @@ class Ring {
       innerRing.addEventListener("dragend", (event) => {
         dragEndX = event.screenX;
         event.target.classList.remove("bg-gray-200");
-
-        if (dragEndX - dragStartX && dragEndX - dragStartX < 320) {
+        if (dragEndX - dragStartX && dragEndX - dragStartX < 400) {
           this.createInnerRing(dragEndX - dragStartX);
         }
       });
     };
 
-    this.attachdocListeners = function () {
+    this.attachDocListeners = function () {
       document.addEventListener(
         "dragenter",
         function (event) {
@@ -80,7 +79,7 @@ class Ring {
         "absolute",
         "rounded-full",
         "border",
-        "border-green-500",
+        "border-lime-700",
         "m-12",
         "flex",
         "justify-center",
