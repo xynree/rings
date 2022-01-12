@@ -4,17 +4,20 @@ export default class RingHandler extends Ring {
 
   constructor(id){
     super(id);
-    this.handlerSetup = function() {
-      this.attachListeners();
 
+    this.ringList = [{id:this.id, title:this.title, innerRings: this.innerRings}];
+    this.selectedRing = 1;
+    this.idIndex = 1;
+
+    this.setup = function() {
+      this.attachListeners();
       if (this.hasStoredRings()){
         this.loadStorage();
+        this.loadRingButtons(this.ringList);
       } else {
         this.saveFullListStorage();
       }
     }
-
-
 
     this.hasStoredRings = function() {
       return window.localStorage.length !== 0 ? true: false
@@ -22,17 +25,17 @@ export default class RingHandler extends Ring {
 
     this.loadStorage = function() {
 
-      let savedRings = JSON.parse(window.localStorage.getItem('savedRings'));
+      let ringList = JSON.parse(window.localStorage.getItem('ringList'));
       this.idIndex = JSON.parse(window.localStorage.getItem('idIndex'));
       this.selectedRing = JSON.parse(window.localStorage.getItem('selectedRing'));
 
-      this.ringList = savedRings;
+      this.ringList = ringList;
 
-      savedRings.forEach(({title, id, ringList}) => {
+      ringList.forEach(({title, id, innerRings}) => {
         if (id === this.selectedRing) {
           {
-            ringList.forEach((value) => {
-              this.loadInnerRing(value);
+            innerRings.forEach((innerRing) => {
+              this.loadInnerRing(innerRing);
             })
           }
           this.title = title;
@@ -40,36 +43,55 @@ export default class RingHandler extends Ring {
       })
     }
 
-
-
     this.saveFullListStorage = function() {
-      window.localStorage.setItem('savedRings', JSON.stringify(this.ringList))
+      window.localStorage.setItem('ringList', JSON.stringify(this.ringList))
+      window.localStorage.setItem('idIndex', JSON.stringify(this.idIndex))
+      window.localStorage.setItem('selectedRing', JSON.stringify(this.selectedRing))
     }
 
+    this.storeInnerRings = function() {
+      let ringList = JSON.parse(window.localStorage.getItem('ringList'));
+
+      let adjustedRingList = ringList.map((ring) => {
+        if (ring.id === this.id){
+          return {...ring, innerRings: this.innerRings};
+        }
+        else return ring
+      })
+
+      this.ringList = adjustedRingList;
+
+      window.localStorage.setItem('ringList', JSON.stringify(adjustedRingList));
+
+    }
 
     this.addNewRing = function(){
       this.idIndex++;
       let newRing = new Ring(this.idIndex);
-      this.selectedRing = this.idIndex;
-      this.newRingButton();
-      this.ringList.push({id: newRing.id, title: newRing.title, ringList: newRing.innerRings});
+      this.ringList.push({id: newRing.id, title: newRing.title, innerRings: newRing.innerRings});
+      this.loadRingButtons(this.ringList)
       console.log(this)
+      this.saveFullListStorage();
     }
 
-
-
-    this.newRingButton = function() {
+    this.loadRingButtons = function(ringList) {
+      let newRingGroup = document.getElementById('newRingGroup')
       let ringButton1 = document.getElementById('ringid_1');
-      let newButton = ringButton1.cloneNode(true);
-      newButton.id = `ringid_${this.idIndex}`
-      ringButton1.insertAdjacentElement('afterend',newButton);
+
+
+      while(newRingGroup.children.length >1){
+        newRingGroup.removeChild(newRingGroup.lastChild);
+      }
+
+      ringList.forEach(({id, title, innerRings}) => {
+        if (id !== 1){
+          let newButton = ringButton1.cloneNode(true);
+          newButton.id = `ringid_${id}`
+          ringButton1.insertAdjacentElement('afterend',newButton);
+        }
+      })
+
     }
-
-
-    this.ringList = [{id:this.id, title:this.title, ringList: this.innerRings}];
-
-    this.selectedRing = 1;
-    this.idIndex = 1;
 
     this.attachListeners = function() {
       this.attachNewRingListener();
@@ -122,7 +144,9 @@ export default class RingHandler extends Ring {
       document.getElementById('clear').addEventListener('click', (e) => {
         e.preventDefault();
        localStorage.clear();
+        window.location.reload();
         console.log('storage cleared!', localStorage)
+
       })
     }
 

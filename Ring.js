@@ -64,11 +64,13 @@ export default class Ring {
       newRing.style.height = `${value}px`;
       this.innerRings.push(value);
       outerRing.appendChild(newRing);
-      console.log(this)
+      this.storeInnerRings();
     };
     this.findDiam = (posX, posY) => Math.sqrt(posX**2 + posY**2)*2
 
     this.innerRings = []
+
+
   }
 
 
