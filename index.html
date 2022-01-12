@@ -7,6 +7,7 @@
     <title>Rings</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="index.js" type="module"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
@@ -20,22 +21,28 @@
         <hr />
         <div>
           <button
+            id="ringid_1"
             class="ringlistbutton m-6 border border-lime-700 text-lime-500 w-4/5 flex justify-between text-center items-center justify-center"
           >
-            <div id="ringlisttitle" class="p-3 text-center w-4/5">
-              Ring Title
-            </div>
+            <div class="p-3 text-center w-4/5">Ring Title</div>
             <div id="ringlistdelete" class="w-1/5 h-full p-3 bg-lime-500">
               <span class="text-white">x</span>
             </div>
           </button>
         </div>
         <button
-          id="newRingButton"
-          class="newring m-6 border border-lime-700 p-3 text-lime-500 w-4/5"
+          id="newring"
+          class="m-6 border border-lime-700 p-3 text-lime-500 w-4/5"
         >
           <span class="text-lime-700">+</span> New Ring
         </button>
+        <button
+        id="clear"
+        class="m-6 border border-lime-700 p-3 text-lime-500 w-4/5"
+      >
+        <span class="text-lime-700">x</span> Clear Save
+      </button>
+
       </div>
       <div class="w-screen flex flex-col justify-between items-between">
         <div class="w-full h-full flex justify-center items-center gap-8">
