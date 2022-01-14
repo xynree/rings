@@ -1,11 +1,15 @@
-import RingHandler  from '/RingHandler.js'
+import RingSkeleton  from '/RingSkeleton.js'
+
 
 function render() {
-  let defRing = new RingHandler(1);
+  let idcounter=0;
+  let defRing = new RingSkeleton(idcounter);
+
   defRing.setup();
 
 }
 
 document.addEventListener("DOMContentLoaded", (event) => {
+
   render();
 });
