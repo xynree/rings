@@ -18,11 +18,10 @@ export default class RingSkeleton  {
       this.attachListeners();
       if (this.hasStoredRings()){
         this.loadStorage();
-        this.loadRingButtons(this.ringList);
+        this.loadRingTitleButtons(this.ringList);
       } else {
         this.saveFullListStorage();
         this.genId();
-        console.log(this)
       }
     }
 
@@ -81,12 +80,12 @@ export default class RingSkeleton  {
     this.addNewRing = function(){
       this.idIndex++;
       this.ringList.push({id: this.idIndex, title: "placeholder title", innerRings: []});
-      this.loadRingButtons(this.ringList)
+      this.loadRingTitleButtons(this.ringList)
       console.log(this)
       this.saveFullListStorage();
     }
 
-    this.loadRingButtons = function(ringList) {
+    this.loadRingTitleButtons = function(ringList) {
       let newRingGroup = document.getElementById('newRingGroup')
       let ringButton1 = document.getElementById('ringid_1');
 
