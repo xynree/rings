@@ -1,15 +1,20 @@
-import RingSkeleton  from '/RingSkeleton.js'
+import Model from '/src/Model.js'
+import View from '/src/View.js'
+import Controller from '/src/Controller.js'
 
 
 function render() {
-  let idcounter=0;
-  let defRing = new RingSkeleton(idcounter);
+  let MyView = new View();
+  let RingSkeleton = new Model(MyView);
+  let MyController = new Controller(RingSkeleton, MyView);
 
-  defRing.setup();
+
+  MyView.loadDefaultView();
+  RingSkeleton.setup();
+  MyController.setup();
 
 }
 
 document.addEventListener("DOMContentLoaded", (event) => {
-
   render();
 });
