@@ -9,21 +9,6 @@ export default class Model {
     ];
     this.storage = new Storage();
 
-    this.setup = function () {
-      if (this.storage.hasStoredRings()) {
-        // load model data
-        this.setSelectedIdFromStorage();
-        this.setRingListFromStorage();
-
-        // update view with storage data
-        this.loadAllSelectedInnerRingsToDOM();
-        View.clearRingTitleButtons();
-
-      } else {
-        this.storage.saveAllStorage(this.ringList, this.selectedId);
-      }
-    }
- 
     // Storage
 
     this.setSelectedIdFromStorage = () => {
@@ -35,7 +20,7 @@ export default class Model {
     }
 
     this.saveStorage = () => this.storage.saveAllStorage(this.ringList, this.selectedId);
-    this.clearStorage = () => this.storage.clearStorage();
+    this.clearStorage = () => this.storage.clearStorage() 
 
     this.resetModelToDefault = () => {
       this.selectedId = 1;
@@ -47,7 +32,7 @@ export default class Model {
 
     // commands for View
 
-    this.loadAllSelectedInnerRingsToDOM = function (ringList=this.ringList) {
+    this.loadAllSelectedInnerRingsToDOM = function (ringList = this.ringList) {
       ringList.forEach(({ title, id, innerRings }) => {
         if (id == this.selectedId) {
             innerRings.forEach((value) => {
@@ -57,13 +42,15 @@ export default class Model {
       })
     };
 
-    this.loadRingTitleButtonsToDOM = function (ringList=this.ringList) {
+    this.loadRingTitleButtonsToDOM = function (ringList = this.ringList) {
       ringList.forEach(({ id, title, innerRings }) => {
         if (id !== 1) {
             View.addRingTitleButton(id);
         }
       });
     };
+
+    //
 
     // update Model
 

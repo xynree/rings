@@ -8,9 +8,6 @@ function render() {
   let RingSkeleton = new Model(MyView);
   let MyController = new Controller(RingSkeleton, MyView);
 
-
-  MyView.loadDefaultView();
-  RingSkeleton.setup();
   MyController.setup();
 
 }

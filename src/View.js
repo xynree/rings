@@ -92,6 +92,7 @@ export default class View {
       newButton.classList.add('ringlistbutton')
       newButton.id = `ringid_${id}`;
       newRingGroup.appendChild(newButton);
+      console.log(newRingGroup, newButton)
     }
 
     this.clearInnerRings = function () {
@@ -108,49 +109,15 @@ export default class View {
       }
     }
 
-    // STYLES
+    this.styleBackground = (elem, color) => elem.style.background = color
 
-    this.clearSelectedRingButton = function(id) {
-      let ringListButtons = document.querySelectorAll('.ringlistbutton')
-      ringListButtons.forEach((button) => {
-        if (button.id.slice(7) !== this.selectedId){
-          button.style.background = "white"
-        }
-      })
-    }
 
-    this.styleSelectedRingButton = function(id){
-
-      if (id !== 1){
-        let ringListButtons = document.querySelectorAll('.ringlistbutton')
-        ringListButtons.forEach((button) => {
-          if (button.id.slice(7) === this.selectedId){
-            console.log('i am the selected one:',button.id)
-            button.style.background = "#DDEAD3"
-          }
-        })
-      } else {
-        let ringListButton = document.querySelector('.ringlistbutton')
-        if (ringListButton.id.slice(7) == this.selectedId){
-          console.log('i am the selected one:',button.id )
-          ringListButton.style.background = "#DDEAD3"
-        }
-      }
-    }
-
-    // for initial loaded ring
-    this.styleDefaultRingButton = function(id) {
-      let ringListButton = document.querySelector('.ringlistbutton')
-      ringListButton.style.background = "#DDEAD3"
-    }
-
-    this.removeInnerRingDragPreview = (e, dragStartX, dragStartY) => {
+    this.removeInnerRingDragPreview = (e) => {
       let dragShadow = e.target.cloneNode(true);
       dragShadow.style.display = "none";
       document.body.appendChild(dragShadow);
       e.dataTransfer.setDragImage(dragShadow, 0, 0);
-      dragStartX = e.screenX;
-      dragStartY = e.screenY;
+
       e.target.classList.add("bg-green-200");
     }
 
