@@ -52,7 +52,7 @@ export default class View {
         <div
           class="flex flex-col justify-start align-start text-2xl text-lime-500"
         >
-          <div class="text-2xl" id='textdisplaytitle'>My Ring Title</div>
+          <input type='text' class="text-2xl" id='textdisplaytitle'  value='My Ring Title'/>
         </div>
       </div>
     </div>
@@ -92,7 +92,6 @@ export default class View {
       newButton.classList.add('ringlistbutton')
       newButton.id = `ringid_${id}`;
       newRingGroup.appendChild(newButton);
-      console.log(newRingGroup, newButton)
     }
 
     this.clearInnerRings = function () {
@@ -117,7 +116,6 @@ export default class View {
       dragShadow.style.display = "none";
       document.body.appendChild(dragShadow);
       e.dataTransfer.setDragImage(dragShadow, 0, 0);
-
       e.target.classList.add("bg-green-200");
     }
 

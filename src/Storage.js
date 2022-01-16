@@ -14,6 +14,7 @@ export default class Storage {
     this.saveAllStorage = (ringList, selectedId) => {
       window.localStorage.setItem("ringList", JSON.stringify(ringList));
       window.localStorage.setItem("selectedId",JSON.stringify(selectedId));
+      console.log('Storage Saved!', localStorage)
     }
 
     this.clearStorage = () => { 

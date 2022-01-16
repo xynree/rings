@@ -19,14 +19,43 @@ export default class Controller {
         this.attachAllRingTitleButtonListeners();
         this.clearSelectedRingButton();
         this.styleSelectedRingButton(Model.selectedId);
+
       } else{
         this.styleDefaultRingButton();
         this.loadDefaultRingTitleButtonListener();
 
         Model.storage.saveAllStorage(Model.ringList, Model.selectedId);
       }
+      this.loadDisplayedTitle();
+      this.attachDisplayedTitleListener();
     }
 
+
+    this.attachDisplayedTitleListener = function() {
+      let node = document.getElementById('textdisplaytitle')
+
+      node.addEventListener("keydown", function (e) {
+        if (e.code === "Enter") {  //checks whether the pressed key 
+          console.log('you pressd enter', e.target.value)
+          Model.ringList.forEach((ring) => {
+            if (ring.id == Model.selectedId){
+              console.log(e.target.value)
+              ring.title = e.target.value;
+              Model.storage.saveAllStorage(Model.ringList, Model.selectedId);
+            }
+            })
+
+            node.blur();
+            }
+          })
+
+    }
+
+    this.loadDisplayedTitle = () => {
+      console.log('load displayed title run')
+      let selectedTitle = Model.ringList.filter((ringList) => ringList.id == Model.selectedId)[0].title
+      document.getElementById('textdisplaytitle').value = selectedTitle;
+    }
 
     this.attachAddNewRingListener = function () {
       let newRing = document.getElementById("newring");
@@ -35,7 +64,6 @@ export default class Controller {
         Model.incrementSelectedId();
         Model.addNewRingToRingListFromSelectedId();
         View.clearInnerRings();
-        console.log(Model.ringList)
         View.addRingTitleButton(Model.selectedId);
         this.clearSelectedRingButton();
         this.styleSelectedRingButton(Model.selectedId)
@@ -46,8 +74,6 @@ export default class Controller {
         newRingTitleButton.addEventListener('click', (e) => this.attachRingTitleButtonListener(e.target.parentNode.id.slice(7), e))
       }); 
     };
-
-
 
     this.attachDragListener_Styles = function () {
       document.addEventListener(
@@ -89,6 +115,7 @@ export default class Controller {
       Model.loadAllSelectedInnerRingsToDOM();
       this.clearSelectedRingButton(id);
       this.styleSelectedRingButton(id);
+      this.loadDisplayedTitle();
     }
 
     this.attachAllRingTitleButtonListeners = function () {
