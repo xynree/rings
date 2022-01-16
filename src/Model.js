@@ -9,18 +9,7 @@ export default class Model {
     ];
     this.storage = new Storage();
 
-    // Storage
-
-    this.setSelectedIdFromStorage = () => {
-      this.selectedId = this.storage.loadSelectedIdFromStorage();
-    }
-
-    this.setRingListFromStorage = () => {
-      this.ringList = this.storage.loadRingListFromStorage();
-    }
-
-    this.saveStorage = () => this.storage.saveAllStorage(this.ringList, this.selectedId);
-    this.clearStorage = () => this.storage.clearStorage() 
+    // reset
 
     this.resetModelToDefault = () => {
       this.selectedId = 1;
@@ -43,7 +32,7 @@ export default class Model {
     };
 
     this.loadRingTitleButtonsToDOM = function (ringList = this.ringList) {
-      ringList.forEach(({ id, title, innerRings }) => {
+      ringList.forEach(({ id}) => {
         if (id !== 1) {
             View.addRingTitleButton(id);
         }

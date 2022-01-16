@@ -52,7 +52,7 @@ export default class View {
         <div
           class="flex flex-col justify-start align-start text-2xl text-lime-500"
         >
-          <div class="text-2xl">Ring Title</div>
+          <div class="text-2xl" id='textdisplaytitle'>My Ring Title</div>
         </div>
       </div>
     </div>

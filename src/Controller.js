@@ -9,8 +9,8 @@ export default class Controller {
       this.attachClickListener_ClearStorage();
 
       if (Model.storage.hasStoredRings()){
-        Model.setSelectedIdFromStorage();
-        Model.setRingListFromStorage();
+        Model.selectedId = Model.storage.loadSelectedIdFromStorage();
+        Model.ringList = Model.storage.loadRingListFromStorage();
 
         View.clearRingTitleButtons();
         Model.loadRingTitleButtonsToDOM();
@@ -39,7 +39,7 @@ export default class Controller {
         View.addRingTitleButton(Model.selectedId);
         this.clearSelectedRingButton();
         this.styleSelectedRingButton(Model.selectedId)
-        Model.saveStorage();
+        Model.storage.saveAllStorage(Model.ringList, Model.selectedId);
 
         // event listener for new ring title button
         let newRingTitleButton = this.findNewRingTitleButton(Model.selectedId);
@@ -84,7 +84,7 @@ export default class Controller {
     this.attachRingTitleButtonListener = function(id, e) {
       e.preventDefault();
       Model.selectedId = id
-      Model.saveStorage();
+      Model.storage.saveAllStorage(Model.ringList, Model.selectedId)
       View.clearInnerRings();
       Model.loadAllSelectedInnerRingsToDOM();
       this.clearSelectedRingButton(id);
@@ -117,7 +117,6 @@ export default class Controller {
       if (id !== 1){
         let ringListButtons = document.querySelectorAll('.ringlistbutton')
         ringListButtons.forEach((button) => {
-          console.log(id, 'checked a button', button.id.slice(7))
           if (button.id.slice(7) == id){
             console.log('i am the selected one:',button.id)
             View.styleBackground(button, this.HIGHLIGHT )
@@ -126,7 +125,6 @@ export default class Controller {
       } else {
         let ringListButton = document.querySelector('.ringlistbutton')
         if (ringListButton.id.slice(7) == id){
-          console.log('i am the selected one:',button.id )
           View.styleBackground(ringListButton, this.HIGHLIGHT)
         }
       }
@@ -187,7 +185,7 @@ export default class Controller {
         if (diam < 770) {
           View.addInnerRing(diam);
           Model.addNewInnerRingToRingList(diam)
-          Model.saveStorage();
+          Model.storage.saveAllStorage(Model.ringList, Model.selectedId)
         }
       });
     };
@@ -196,7 +194,7 @@ export default class Controller {
   this.attachClickListener_ClearStorage = function () {
       document.getElementById("clear").addEventListener("click", (e) => {
         e.preventDefault();
-        Model.clearStorage();
+        Model.storage.clearStorage();
         Model.resetModelToDefault();
         View.clearInnerRings();
         View.clearRingTitleButtons();
