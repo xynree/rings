@@ -1,4 +1,4 @@
-import Storage from './Storage.js';
+import Storage from './OtherClasses/Storage.js';
 
 export default class Model {
   constructor(View) {

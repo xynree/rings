@@ -1,6 +1,7 @@
 export default class Controller {
   constructor(Model, View) {
 
+
     this.setup = function() {
       View.loadDefaultView();
       this.attachAddNewRingListener();
@@ -28,13 +29,14 @@ export default class Controller {
       }
       this.loadDisplayedTitle();
       this.attachDisplayedTitleListener();
+      this.loadRingListButtonTitles();
     }
 
 
-    this.attachDisplayedTitleListener = function() {
+    this.attachDisplayedTitleListener = () => {
       let node = document.getElementById('textdisplaytitle')
 
-      node.addEventListener("keydown", function (e) {
+      node.addEventListener("keydown", (e) =>{
         if (e.code === "Enter") {  //checks whether the pressed key 
           console.log('you pressd enter', e.target.value)
           Model.ringList.forEach((ring) => {
@@ -42,13 +44,13 @@ export default class Controller {
               console.log(e.target.value)
               ring.title = e.target.value;
               Model.storage.saveAllStorage(Model.ringList, Model.selectedId);
+
             }
             })
-
             node.blur();
+            this.loadRingListButtonTitles();
             }
           })
-
     }
 
     this.loadDisplayedTitle = () => {
@@ -68,6 +70,7 @@ export default class Controller {
         this.clearSelectedRingButton();
         this.styleSelectedRingButton(Model.selectedId)
         Model.storage.saveAllStorage(Model.ringList, Model.selectedId);
+        this.loadRingListButtonTitles();
 
         // event listener for new ring title button
         let newRingTitleButton = this.findNewRingTitleButton(Model.selectedId);
@@ -107,6 +110,20 @@ export default class Controller {
       );
     };
 
+
+    this.loadRingListButtonTitles = () => {
+
+      let ringListButtons = document.querySelectorAll(".ringlistbutton");
+      ringListButtons.forEach((button) => {
+  
+        let selectedTitle = Model.ringList.filter((ring)=> ring.id == button.id.slice(7))[0].title
+  
+        button.firstElementChild.innerText = selectedTitle;
+        console.log(button.id.slice(7), button.firstElementChild.innerText, selectedTitle)
+  
+      })
+  
+    }
     this.attachRingTitleButtonListener = function(id, e) {
       e.preventDefault();
       Model.selectedId = id
@@ -116,6 +133,7 @@ export default class Controller {
       this.clearSelectedRingButton(id);
       this.styleSelectedRingButton(id);
       this.loadDisplayedTitle();
+      this.loadRingListButtonTitles();
     }
 
     this.attachAllRingTitleButtonListeners = function () {
@@ -231,4 +249,6 @@ export default class Controller {
 
 
   }
+
+
 }

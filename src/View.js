@@ -14,7 +14,7 @@ export default class View {
         id="ringid_1"
         class="ringlistbutton m-6 border border-lime-700 text-lime-500 w-4/5 flex justify-between text-center items-center justify-center"
       >
-        <div class="p-3 text-center w-4/5">Ring Title</div>
+        <div class="p-3 text-center w-4/5 ringlisttitle">Ring Title</div>
         <div id="ringlistdelete" class="w-1/5 h-full p-3 bg-lime-500">
           <span class="text-white">x</span>
         </div>
