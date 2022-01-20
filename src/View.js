@@ -6,12 +6,12 @@ export default class View {
     class="w-1/4 h-full flex flex-col justify-center"
   >
     <div>
-    <input type='text' class="text-2xl bg-transparent text-center" id='textdisplaytitle' value='My Ring Title'/>
+    <input type='text' class="text-2xl bg-transparent text-center caret-brown-800 selection:bg-stone-200 focus:outline-none focus:ring-stone-900" id='textdisplaytitle' required value='My Ring Title'/>
     </div>
-    <div id='newRingGroup' class='m-6 ml-12'>
+    <div id='newRingGroup' class='m-6 ml-12 overflow-auto hover:overflow-scroll h-1/3 scroll-smooth'>
       <button
         id="ringid_1"
-        class="ringlistbutton border border-stone-800 text-stone-800 w-4/5 m-2 flex justify-between text-center items-center "
+        class="ringlistbutton border border-dotted border-stone-800 hover:border-solid text-stone-800 w-4/5 m-2 flex justify-between text-center items-center "
       >
         <div class="p-2 text-center text-sm ringlisttitle bg-transparent">Ring Title</div>
         <div id="ringlistdelete" class="w-1/5 h-100 p-2 bg-stone-200 ">
@@ -53,7 +53,6 @@ export default class View {
     </div>
 
   </div>
-  <div id="control" class="absolute w-full h-6 bg-stone-400 bottom-0"></div>
 
     </div>`
 
