@@ -1,36 +1,35 @@
 export default class View {
   constructor() {
 
-    this.defaultView = `<div class="flex w-screen h-screen bg-zinc-50">
+    this.defaultView = `<div class="flex left-0 right-0 m-auto w-2/3 md:w-4/5 h-screen bg-stone-100 justify-center items-center">
   <div
-    class="w-1/4 border border-lime-700 h-full flex flex-col justify-start bg-white"
+    class="w-1/4 h-full flex flex-col justify-center"
   >
     <div>
-      <div class="text-center m-12 text-4xl text-lime-500">My Rings</div>
+    <input type='text' class="text-2xl bg-transparent text-center" id='textdisplaytitle' value='My Ring Title'/>
     </div>
-    <hr />
-    <div id='newRingGroup'>
+    <div id='newRingGroup' class='m-6 ml-12'>
       <button
         id="ringid_1"
-        class="ringlistbutton m-6 border border-lime-700 text-lime-500 w-4/5 flex justify-between text-center items-center justify-center"
+        class="ringlistbutton border border-stone-800 text-stone-800 w-4/5 m-2 flex justify-between text-center items-center "
       >
-        <div class="p-3 text-center w-4/5 ringlisttitle">Ring Title</div>
-        <div id="ringlistdelete" class="w-1/5 h-full p-3 bg-lime-500">
-          <span class="text-white">x</span>
+        <div class="p-2 text-center text-sm ringlisttitle bg-transparent">Ring Title</div>
+        <div id="ringlistdelete" class="w-1/5 h-100 p-2 bg-stone-200 ">
+          <span class="text-stone-500 bg-transparent">x</span>
         </div>
       </button>
     </div>
     <button
       id="newring"
-      class="m-6 border border-lime-700 p-3 text-lime-500 w-4/5"
+      class="m-8 mt-0 mb-1  border border-stone-700 p-2 text-stone-500 w-4/5"
     >
-      <span class="text-lime-700">+</span> New Ring
+      <span class="text-stone-800 text-sm">+ </span> New Ring
     </button>
     <button
     id="clear"
-    class="m-6 border border-lime-700 p-3 text-lime-500 w-4/5"
+    class="m-8 mt-1 mb-2   border border-stone-700 p-2 text-stone-500 w-4/5"
   >
-    <span class="text-lime-700">x</span> Clear Save
+    <span class="text-stone-800 text-sm">x </span> Clear Save
   </button>
 
   </div>
@@ -38,27 +37,24 @@ export default class View {
     <div class="w-full h-full flex justify-center items-center gap-8">
       <div
         id="oring"
-        class="oring min-w-96 rounded-full dragzone border border-lime-700 flex justify-center items-center"
+        class="oring  rounded-full dragzone border border-slate-700 flex justify-center items-center"
       >
         <div
           draggable="true"
           id="iring"
-          class="iring z-50 w-9 h-9 rounded-full border border-lime-700 text-lime-500 flex text-center items-center justify-center cursor-grab"
+          class="iring z-50 w-9 h-9 rounded-full border border-slate-700 text-black flex text-center items-center justify-center cursor-grab"
         >
           +
         </div>
       </div>
-      <div class="self-start p-6 justify-self-end">
-        <div
-          class="flex flex-col justify-start align-start text-2xl text-lime-500"
-        >
-          <input type='text' class="text-2xl" id='textdisplaytitle'  value='My Ring Title'/>
-        </div>
+      <div class="self-start pt-16 justify-self-end">
+
       </div>
     </div>
 
-    <div id="control" class="w-full h-12 greenbar"></div>
   </div>
+  <div id="control" class="absolute w-full h-6 bg-stone-400 bottom-0"></div>
+
     </div>`
 
     this.loadDefaultView = () => {
@@ -73,7 +69,8 @@ export default class View {
         "absolute",
         "rounded-full",
         "border",
-        "border-lime-700",
+        "border-stone-700",
+        "bg-transparent",
         "m-12",
         "flex",
         "justify-center",
@@ -116,7 +113,7 @@ export default class View {
       dragShadow.style.display = "none";
       document.body.appendChild(dragShadow);
       e.dataTransfer.setDragImage(dragShadow, 0, 0);
-      e.target.classList.add("bg-green-200");
+      e.target.classList.add("bg-stone-200");
     }
 
 

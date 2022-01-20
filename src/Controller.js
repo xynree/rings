@@ -32,7 +32,6 @@ export default class Controller {
       this.loadRingListButtonTitles();
     }
 
-
     this.attachDisplayedTitleListener = () => {
       let node = document.getElementById('textdisplaytitle')
 
@@ -83,7 +82,7 @@ export default class Controller {
         "dragenter",
         function (event) {
           if (event.target.classList.contains("dragzone")) {
-            event.target.classList.add("bg-green-100");
+            event.target.classList.add("bg-stone-100");
           }
         },
         false
@@ -93,7 +92,7 @@ export default class Controller {
         "dragleave",
         function (event) {
           if (event.target.classList.contains("dragzone")) {
-            event.target.classList.remove("bg-green-100");
+            event.target.classList.remove("bg-stone-100");
           }
         },
         false
@@ -103,7 +102,7 @@ export default class Controller {
         "dragend",
         function (event) {
           if (event.target.classList.contains("dragzone")) {
-            event.target.classList.remove("bg-green-100");
+            event.target.classList.remove("bg-stone-100");
           }
         },
         false
@@ -147,13 +146,13 @@ export default class Controller {
 
     // STYLES
 
-    this.HIGHLIGHT = "rgb(242, 255, 207)"
+    this.HIGHLIGHT = "white"
 
     this.clearSelectedRingButton = function() {
       let ringListButtons = document.querySelectorAll('.ringlistbutton')
       ringListButtons.forEach((button) => {
         if (button.id.slice(7) !== this.selectedId){
-          View.styleBackground(button, "white")
+          View.styleBackground(button, "transparent")
         }
       })
     }
@@ -202,11 +201,11 @@ export default class Controller {
 
 
       innerRing.addEventListener("mouseenter", (event) => {
-        event.target.classList.add("bg-gray-200");
+        event.target.classList.add("bg-stone-300");
       });
 
       innerRing.addEventListener("mouseout", (event) => {
-        event.target.classList.remove("bg-gray-200");
+        event.target.classList.remove("bg-stone-300");
       });
 
       innerRing.addEventListener("dragstart", (event) => {
@@ -220,14 +219,16 @@ export default class Controller {
         event.preventDefault;
         dragEndX = event.screenX;
         dragEndY = event.screenY;
-        event.target.classList.remove("bg-green-200");
+
+        console.log(event)
+        event.target.classList.remove("bg-stone-300");
 
         let posX = Math.abs(dragEndX - dragStartX);
         let posY = Math.abs(dragEndY - dragStartY);
 
         let diam = Math.round(this.findDiam(posX, posY));
 
-        if (diam < 770) {
+        if (diam < 970) {
           View.addInnerRing(diam);
           Model.addNewInnerRingToRingList(diam)
           Model.storage.saveAllStorage(Model.ringList, Model.selectedId)
