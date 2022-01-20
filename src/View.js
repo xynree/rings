@@ -8,12 +8,12 @@ export default class View {
     <div>
     <input type='text' class="text-2xl bg-transparent text-center caret-brown-800 selection:bg-stone-200 focus:outline-none focus:ring-stone-900" id='textdisplaytitle' required value='My Ring Title'/>
     </div>
-    <div id='newRingGroup' class='m-6 ml-12 overflow-auto hover:overflow-scroll h-1/3 scroll-smooth'>
+    <div id='newRingGroup' class='m-6 ml-12 overflow-hidden hover:overflow-scroll h-1/3 scroll-smooth'>
       <button
         id="ringid_1"
         class="ringlistbutton border border-dotted border-stone-800 hover:border-solid text-stone-800 w-4/5 m-2 flex justify-between text-center items-center "
       >
-        <div class="p-2 text-center text-sm ringlisttitle bg-transparent">Ring Title</div>
+        <div class="p-2 mb-2 text-center text-sm ringlisttitle bg-transparent">Ring Title</div>
         <div id="ringlistdelete" class="w-1/5 h-100 p-2 bg-stone-200 ">
           <span class="text-stone-500 bg-transparent">x</span>
         </div>

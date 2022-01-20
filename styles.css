@@ -39,3 +39,24 @@
   width: 48rem;
   height: 48rem;
 }
+
+/* Works on Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(245 245 244);
+}
+
+/* Works on Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: rgb(245 245 244);
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: rgb(245 245 244);
+  border-radius: 2px;
+  border: none;
+}
