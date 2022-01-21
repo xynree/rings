@@ -3,17 +3,17 @@ export default class View {
 
     this.defaultView = `<div class="flex left-0 right-0 m-auto w-2/3 md:w-4/5 h-screen bg-stone-100 justify-center items-center">
   <div
-    class="w-1/4 h-full flex flex-col justify-center"
+    class="w-1/4 h-full flex flex-col justify-center "
   >
     <div>
-    <input type='text' class="text-2xl bg-transparent text-center caret-brown-800 selection:bg-stone-200 focus:outline-none focus:ring-stone-900" id='textdisplaytitle' required value='My Ring Title'/>
+    <input type='text' class="text-4xl bg-transparent text-left caret-brown-800 selection:bg-stone-200 focus:outline-none focus:ring-stone-900" id='textdisplaytitle' required value='My Ring Title'/>
     </div>
-    <div id='newRingGroup' class='m-6 ml-12 overflow-hidden hover:overflow-scroll h-1/3 scroll-smooth'>
+    <div id='newRingGroup' class=' overflow-hidden hover:overflow-scroll h-1/3 scroll-smooth'>
       <button
         id="ringid_1"
-        class="ringlistbutton border border-dotted border-stone-800 hover:border-solid text-stone-800 w-4/5 m-2 flex justify-between text-center items-center "
+        class="ringlistbutton border border-dotted border-stone-800 hover:border-solid text-stone-800 w-full mt-2 mb-2 flex justify-between text-center items-center "
       >
-        <div class="p-2 mb-2 text-center text-sm ringlisttitle bg-transparent">Ring Title</div>
+        <div class="p-1 mb-2 text-center text-sm ringlisttitle bg-transparent">Ring Title</div>
         <div id="ringlistdelete" class="w-1/5 h-100 p-2 bg-stone-200 ">
           <span class="text-stone-500 bg-transparent">x</span>
         </div>
@@ -37,7 +37,7 @@ export default class View {
     <div class="w-full h-full flex justify-center items-center gap-8">
       <div
         id="oring"
-        class="oring  rounded-full dragzone border border-slate-700 flex justify-center items-center"
+        class="oring  ml-12 rounded-full dragzone border border-slate-700 flex justify-center items-center"
       >
         <div
           draggable="true"

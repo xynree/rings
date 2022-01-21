@@ -1,6 +1,6 @@
-import Model from '/src/Model.js'
-import View from '/src/View.js'
-import Controller from '/src/Controller.js'
+import Model from './src/Model/Model.js'
+import View from './src/View/View.js'
+import Controller from './src/Controller/Controller.js'
 
 
 function render() {
