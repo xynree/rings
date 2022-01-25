@@ -39,7 +39,6 @@ export default class Controller_DragListeners {
                 event.preventDefault();
                 dragEndX = event.screenX;
                 dragEndY = event.screenY;
-                console.log(event);
                 event.target.classList.remove("bg-stone-300");
                 let posX = Math.abs(dragEndX - dragStartX);
                 let posY = Math.abs(dragEndY - dragStartY);

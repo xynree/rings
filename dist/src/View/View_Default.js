@@ -12,7 +12,7 @@ export default class View_Default {
           id="ringid_1"
           class="ringlistbutton border border-dotted border-stone-800 hover:border-solid text-stone-800 w-full mt-2 mb-2 flex justify-between text-center items-center "
         >
-          <div class="p-1 mb-2 text-center text-sm ringlisttitle bg-transparent">Ring Title</div>
+          <div class="p-2 m-auto w-full h-full text-left text-sm ringlisttitle bg-transparent">Ring Title</div>
           <div id="ringlistdelete" class="w-1/5 h-100 p-2 bg-stone-200 ">
             <span class="text-stone-500 bg-transparent">x</span>
           </div>

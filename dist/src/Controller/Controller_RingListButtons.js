@@ -9,14 +9,14 @@ export default class Controller_RingListButtons {
             Model.viewCommands.loadAllSelectedInnerRingsToDOM(Model.ringList, Model.selectedId);
             this.clearSelectedRingButton(id);
             this.styleSelectedRingListButton(id);
-            loadDisplayedTitle();
             this.loadRingListButtonTitles();
+            loadDisplayedTitle();
         };
         this.attachAllRingTitleButtonListeners = function (loadDisplayedTitle) {
             let ringListButtons = document.querySelectorAll(".ringlistbutton");
             ringListButtons.forEach((button) => {
                 button.addEventListener("click", (e) => {
-                    this.attachRingTitleButtonListener(button.id.slice(7), e);
+                    this.attachRingTitleButtonListener(button.id.slice(7), e, loadDisplayedTitle);
                 });
             });
         };

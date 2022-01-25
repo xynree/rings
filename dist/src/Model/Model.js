@@ -11,7 +11,7 @@ export default class Model {
         this.storage = new Model_Storage();
         this.addNewInnerRingToRingList = (val) => {
             this.ringList.forEach(({ id, innerRings }) => {
-                if (id == this.selectedId) {
+                if (id === this.selectedId) {
                     innerRings.push(val);
                 }
             });

@@ -11,7 +11,7 @@ export interface ModelType {
   ringList:ring[];
   storage: Model_StorageType;
   viewCommands: any;
-  addNewInnerRingToRingList: () => void;
+  addNewInnerRingToRingList: (val: number) => void;
   addNewRingToRingListFromSelectedId: (val: number) => void;
   resetModelToDefault: () => void;
 }
@@ -22,7 +22,7 @@ export default class Model implements ModelType {
   ringList:ring[];
   storage: Model_StorageType;
   viewCommands: any;
-  addNewInnerRingToRingList: () => void;
+  addNewInnerRingToRingList: (val: number) => void;
   addNewRingToRingListFromSelectedId: (val: number) => void;
   resetModelToDefault: () => void;
 
@@ -37,7 +37,7 @@ export default class Model implements ModelType {
 
     this.addNewInnerRingToRingList = (val:number ) => {
       this.ringList.forEach(({ id, innerRings }) => {
-        if (id == this.selectedId) {
+        if (id === this.selectedId) {
           innerRings.push(val)
         }
       })
