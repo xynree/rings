@@ -1,16 +1,21 @@
 import { ModelType } from '../Model/Model.js'
 import { ViewType } from '../View/View.js'
 import { ring } from '../Types/Types.js'
+import Controller_Default, { Controller_DefaultType }  from './Controller_Default.js'
 
 
 export default class Controller  {
 
+  default: Controller_DefaultType;
+
+
   setup: () => void;
   
   attachAddNewRingListener: () => void;
+  attachDragListener_Styles:()=> void;
+  attachDragListener_NewInnerRing: () => void;
   attachClickListener_ClearStorage: () => void;
-  loadDefaultRingTitleButtonListener: () => void;
-  styleDefaultRingButton: () => void;
+
   
   HIGHLIGHT: string;
   attachRingTitleButtonListener: (id:number, e:any) => void;
@@ -20,12 +25,13 @@ export default class Controller  {
   styleSelectedRingListButton:() => void;
   findNewRingTitleButton: (id:number) => Element
   findDiam: (posX:number, posY:number) => number;
-  attachDragListener_Styles:()=> void;
-  attachDragListener_NewInnerRing: () => void;
+
   attachDisplayedTitleListener:() => void;
   loadDisplayedTitle:() => void;
 
   constructor(Model:ModelType, View:ViewType) {
+
+    this.default = new Controller_Default(View);
 
     this.setup = function() {
       View.default.loadDefaultView();
@@ -42,13 +48,11 @@ export default class Controller  {
         Model.viewCommands.loadAllSelectedInnerRingsToDOM(Model.ringList, Model.selectedId);
 
         this.attachAllRingTitleButtonListeners();
-
         this.clearSelectedRingButton(Model.selectedId);
         this.styleSelectedRingListButton();
 
       } else{
-        this.styleDefaultRingButton();
-        this.loadDefaultRingTitleButtonListener();
+        this.default.loadDefaults(this.attachRingTitleButtonListener);
 
         Model.storage.saveAllStorage(Model.ringList, Model.selectedId);
       }
@@ -99,17 +103,9 @@ export default class Controller  {
     };
 
 
-    this.loadDefaultRingTitleButtonListener = () => {
-      let ringListButton = document.querySelector('.ringlistbutton');
-      ringListButton.addEventListener('click', (e) =>{
-        this.attachRingTitleButtonListener(parseInt(ringListButton.id.slice(7)), e)
-    })
-    }
 
-    this.styleDefaultRingButton = () => {
-      let ringListButton = document.querySelector('.ringlistbutton')
-      View.styleBackground(<HTMLElement>ringListButton, "white")
-    }
+
+
 
     this.HIGHLIGHT = "white"
 

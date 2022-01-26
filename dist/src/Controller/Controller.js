@@ -1,5 +1,7 @@
+import Controller_Default from './Controller_Default.js';
 export default class Controller {
     constructor(Model, View) {
+        this.default = new Controller_Default(View);
         this.setup = function () {
             View.default.loadDefaultView();
             this.attachAddNewRingListener();
@@ -17,8 +19,7 @@ export default class Controller {
                 this.styleSelectedRingListButton();
             }
             else {
-                this.styleDefaultRingButton();
-                this.loadDefaultRingTitleButtonListener();
+                this.default.loadDefaults(this.attachRingTitleButtonListener);
                 Model.storage.saveAllStorage(Model.ringList, Model.selectedId);
             }
             this.loadDisplayedTitle();
@@ -54,16 +55,6 @@ export default class Controller {
                 View.innerRings.clearInnerRings();
                 View.ringTitleButtons.clearRingTitleButtons();
             });
-        };
-        this.loadDefaultRingTitleButtonListener = () => {
-            let ringListButton = document.querySelector('.ringlistbutton');
-            ringListButton.addEventListener('click', (e) => {
-                this.attachRingTitleButtonListener(parseInt(ringListButton.id.slice(7)), e);
-            });
-        };
-        this.styleDefaultRingButton = () => {
-            let ringListButton = document.querySelector('.ringlistbutton');
-            View.styleBackground(ringListButton, "white");
         };
         this.HIGHLIGHT = "white";
         this.attachRingTitleButtonListener = (id, e) => {
