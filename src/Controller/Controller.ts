@@ -2,11 +2,8 @@ import { ModelType } from '../Model/Model.js'
 import { ViewType } from '../View/View.js'
 import { ring } from '../Types/Types.js'
 
-export interface ControllerType {
 
-}
-
-export default class Controller implements ControllerType {
+export default class Controller  {
 
   setup: () => void;
   
@@ -20,7 +17,7 @@ export default class Controller implements ControllerType {
   attachAllRingTitleButtonListeners: () => void;
   loadRingListButtonTitles:() => void;
   clearSelectedRingButton:() => void;
-  styleSelectedRingListButton:(id:number) => void;
+  styleSelectedRingListButton:() => void;
   findNewRingTitleButton: (id:number) => Element
   findDiam: (posX:number, posY:number) => number;
   attachDragListener_Styles:()=> void;
@@ -47,7 +44,7 @@ export default class Controller implements ControllerType {
         this.attachAllRingTitleButtonListeners();
 
         this.clearSelectedRingButton(Model.selectedId);
-        this.styleSelectedRingListButton(Model.selectedId);
+        this.styleSelectedRingListButton();
 
       } else{
         this.styleDefaultRingButton();
@@ -85,8 +82,7 @@ export default class Controller implements ControllerType {
         console.log(e.target.parentNode, e.target.parentNode.id)   
         this.attachRingTitleButtonListener(
         parseInt(e.target.parentNode.id.slice(7)), 
-        e,
-        this.loadDisplayedTitle)
+        e)
 
       })
       }); 
@@ -123,11 +119,13 @@ export default class Controller implements ControllerType {
     View.innerRings.clearInnerRings();
     Model.viewCommands.loadAllSelectedInnerRingsToDOM(Model.ringList, Model.selectedId);
     this.clearSelectedRingButton();
-    this.styleSelectedRingListButton(id);
+    this.styleSelectedRingListButton();
+
     Model.storage.saveAllStorage(Model.ringList, Model.selectedId);
 
     this.loadRingListButtonTitles();
     this.loadDisplayedTitle();
+
   }
 
     this.attachAllRingTitleButtonListeners = function () {
@@ -156,18 +154,18 @@ export default class Controller implements ControllerType {
       })
     }
 
-    this.styleSelectedRingListButton = function(id){
+    this.styleSelectedRingListButton = function(){
 
-      if (id !== 1){
+      if (Model.selectedId !== 1){
         let ringListButtons = document.querySelectorAll('.ringlistbutton')
         ringListButtons.forEach((button) => {
-          if (parseInt(button.id.slice(7)) == id){
+          if (parseInt(button.id.slice(7)) == Model.selectedId){
             View.styleBackground(<HTMLElement>button, this.HIGHLIGHT )
           }
         })
       } else {
         let ringListButton = document.querySelector('.ringlistbutton')
-        if (parseInt(ringListButton.id.slice(7)) == id){
+        if (parseInt(ringListButton.id.slice(7)) == Model.selectedId){
           View.styleBackground(<HTMLElement>ringListButton, this.HIGHLIGHT)
         }
       }

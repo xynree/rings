@@ -14,7 +14,7 @@ export default class Controller {
                 Model.viewCommands.loadAllSelectedInnerRingsToDOM(Model.ringList, Model.selectedId);
                 this.attachAllRingTitleButtonListeners();
                 this.clearSelectedRingButton(Model.selectedId);
-                this.styleSelectedRingListButton(Model.selectedId);
+                this.styleSelectedRingListButton();
             }
             else {
                 this.styleDefaultRingButton();
@@ -42,7 +42,7 @@ export default class Controller {
                 let newRingTitleButton = this.findNewRingTitleButton(Model.selectedId);
                 newRingTitleButton.addEventListener('click', (e) => {
                     console.log(e.target.parentNode, e.target.parentNode.id);
-                    this.attachRingTitleButtonListener(parseInt(e.target.parentNode.id.slice(7)), e, this.loadDisplayedTitle);
+                    this.attachRingTitleButtonListener(parseInt(e.target.parentNode.id.slice(7)), e);
                 });
             });
         };
@@ -72,7 +72,7 @@ export default class Controller {
             View.innerRings.clearInnerRings();
             Model.viewCommands.loadAllSelectedInnerRingsToDOM(Model.ringList, Model.selectedId);
             this.clearSelectedRingButton();
-            this.styleSelectedRingListButton(id);
+            this.styleSelectedRingListButton();
             Model.storage.saveAllStorage(Model.ringList, Model.selectedId);
             this.loadRingListButtonTitles();
             this.loadDisplayedTitle();
@@ -100,18 +100,18 @@ export default class Controller {
                 }
             });
         };
-        this.styleSelectedRingListButton = function (id) {
-            if (id !== 1) {
+        this.styleSelectedRingListButton = function () {
+            if (Model.selectedId !== 1) {
                 let ringListButtons = document.querySelectorAll('.ringlistbutton');
                 ringListButtons.forEach((button) => {
-                    if (parseInt(button.id.slice(7)) == id) {
+                    if (parseInt(button.id.slice(7)) == Model.selectedId) {
                         View.styleBackground(button, this.HIGHLIGHT);
                     }
                 });
             }
             else {
                 let ringListButton = document.querySelector('.ringlistbutton');
-                if (parseInt(ringListButton.id.slice(7)) == id) {
+                if (parseInt(ringListButton.id.slice(7)) == Model.selectedId) {
                     View.styleBackground(ringListButton, this.HIGHLIGHT);
                 }
             }
