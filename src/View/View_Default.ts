@@ -31,16 +31,19 @@ export default class View_Default implements View_DefaultType{
       <div>
       <input type='text' class="text-4xl bg-transparent text-left ${this.styles.caret} ${this.styles.selection} mb-4 focus:outline-none ${this.styles.focus} ${this.styles.text1}" id='textdisplaytitle'  required value='My Ring Title'/>
       </div>
-      <div id='newRingGroup' class=' overflow-hidden hover:overflow-scroll h-1/3 scroll-smooth'>
+      <div id='newRingGroup' class='overflow-hidden hover:overflow-scroll h-1/3 scroll-smooth'>
+      <div id="ringid_1" class='ringtitlebuttongroup z-0 flex w-4/5 h-10 m-2 items-center justify-between'>
         <button
-          id="ringid_1"
-          class="ringlistbutton border border-dotted ${this.styles.border} hover:border-solid ${this.styles.text1} w-full mt-2 mb-2 flex justify-between text-center items-center "
+        id='ringlistbutton'
+          class="{this.styles.text2} border border-dotted ${this.styles.border}  ${this.styles.text1} w-full  h-10 p-2 justify-between text-center items-center "
         >
-          <div class="p-2 m-auto w-full h-full text-left text-sm  ringlisttitle bg-transparent ${this.styles.text2} ">Ring Title</div>
-          <div id="ringlistdelete" class="ringlistdelete w-1/5 h-100 p-2 ${this.styles.highlight} hover:bg-${color}-200 ">
-            <span class="${this.styles.text2} bg-transparent">x</span>
-          </div>
-        </button>
+         Ring Title
+          </button>
+          <button class="ringlistdelete flex-0 p-2 h-10 z-10 hover:bg-${color}-100 invisible ${this.styles.text2} ">
+          x
+          </button>
+      </div>
+
       </div>
       <button
         id="newring"

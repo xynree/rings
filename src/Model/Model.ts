@@ -54,7 +54,7 @@ export default class Model implements ModelType {
     this.addNewRingToRingListFromSelectedId = (id:number, ) => {
       this.ringList.push({
         id: id,
-        title: "placeholder title",
+        title: "New Ring",
         innerRings: [],
       });
     }

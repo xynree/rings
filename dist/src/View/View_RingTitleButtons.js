@@ -2,11 +2,11 @@ export default class View_RingTitleButtons {
     constructor() {
         this.addRingTitleButton = (id) => {
             let newRingGroup = document.getElementById("newRingGroup");
-            let ringButton1 = document.getElementById('ringid_1');
-            let newButton = ringButton1.cloneNode(true);
-            newButton.classList.add('ringlistbutton');
-            newButton.id = `ringid_${id}`;
-            newRingGroup.appendChild(newButton);
+            let newRingButtonGroup = document.getElementById('ringid_1').cloneNode(true);
+            newRingButtonGroup.classList.add('ringtitlebuttongroup');
+            newRingButtonGroup.lastElementChild.classList.remove('invisible');
+            newRingButtonGroup.id = `ringid_${id}`;
+            newRingGroup.appendChild(newRingButtonGroup);
         };
         this.clearRingTitleButtons = function () {
             let newRingGroup = document.getElementById("newRingGroup");
@@ -15,6 +15,8 @@ export default class View_RingTitleButtons {
             }
         };
         this.clearButton = (elem) => {
+            console.log(elem);
+            elem.innerHTML = '';
             elem.remove();
         };
     }

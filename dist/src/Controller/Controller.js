@@ -18,10 +18,10 @@ export default class Controller {
         this.setup = function () {
             if (Model.storage.hasColor()) {
                 View.color = Model.storage.loadColorFromStorage();
-                View.innerRings = new View_InnerRings(View.color);
-                View.default = new View_Default(View.color);
+                View.InnerRings = new View_InnerRings(View.color);
+                View.Default = new View_Default(View.color);
             }
-            View.default.loadDefaultView();
+            View.Default.loadDefaultView();
             this.attachColorButtonListener();
             this.attachAddNewRingListener();
             this.Drag.attachDragListener_Styles();
@@ -32,8 +32,9 @@ export default class Controller {
                 Model.selectedId = Model.storage.loadSelectedIdFromStorage();
                 Model.ringList = Model.storage.loadRingListFromStorage();
                 Model.textList = Model.storage.loadText();
+                this.Text.removeOldNodes();
                 this.Text.loadTextNodes();
-                View.ringTitleButtons.clearRingTitleButtons();
+                View.RingTitleButtons.clearRingTitleButtons();
                 Model.viewCommands.loadRingTitleButtonsToDOM(Model.ringList);
                 Model.viewCommands.loadAllSelectedInnerRingsToDOM(Model.ringList, Model.selectedId);
                 this.RingListButtons.attachAllRingTitleButtonListeners(this.Titles.loadDisplayedTitle);
@@ -69,10 +70,9 @@ export default class Controller {
             newRing.addEventListener("click", (e) => {
                 e.preventDefault();
                 Model.selectedId = Model.ringList[Model.ringList.length - 1].id + 1;
-                console.log(Model.selectedId);
                 Model.addNewRingToRingListFromSelectedId(Model.selectedId);
-                View.innerRings.clearInnerRings();
-                View.ringTitleButtons.addRingTitleButton(Model.selectedId);
+                View.InnerRings.clearInnerRings();
+                View.RingTitleButtons.addRingTitleButton(Model.selectedId);
                 this.RingListButtons.clearSelectedRingListButton();
                 this.RingListButtons.styleSelectedRingListButton();
                 Model.storage.saveAllStorage(Model.ringList, Model.selectedId, View.color);
@@ -81,11 +81,7 @@ export default class Controller {
                 // event listener for new ring title button
                 let newRingTitleButton = this.RingListButtons.findNewRingTitleButton(Model.selectedId);
                 this.RingListButtons.attachDeleteListener(newRingTitleButton.lastElementChild, this.Titles.loadDisplayedTitle);
-                newRingTitleButton.addEventListener('click', (e) => {
-                    if (e.target.parentNode.id === 'ringlistdelete' || e.target.parentNode.id === 'ringlistdeletespan')
-                        return;
-                    this.RingListButtons.attachRingTitleButtonListener(parseInt(e.target.parentNode.id.slice(7)), e, this.Titles.loadDisplayedTitle);
-                });
+                this.RingListButtons.attachRingTitleButtonListener(newRingTitleButton, Model.selectedId, this.Titles.loadDisplayedTitle);
             });
         };
         this.attachClickListener_ClearStorage = function () {
@@ -93,8 +89,8 @@ export default class Controller {
                 e.preventDefault();
                 Model.storage.clearStorage();
                 Model.resetModelToDefault();
-                View.innerRings.clearInnerRings();
-                View.ringTitleButtons.clearRingTitleButtons();
+                View.InnerRings.clearInnerRings();
+                View.RingTitleButtons.clearRingTitleButtons();
             });
         };
     }

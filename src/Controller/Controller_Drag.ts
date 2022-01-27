@@ -1,4 +1,4 @@
-import {ModelType} from '../Model/Model.js'
+import { ModelType } from '../Model/Model.js'
 import { ViewType } from '../View/View.js'
 
 export interface Controller_DragType {
@@ -14,8 +14,6 @@ export default class Controller_Drag implements Controller_DragType {
   attachDragListener_Styles:()=> void;
   attachDragListener_NewInnerRing: () => void;
   findDiam: (posX:number, posY:number) => number;
-
-
 
   constructor(Model:ModelType, View:ViewType){
 
@@ -70,7 +68,7 @@ export default class Controller_Drag implements Controller_DragType {
       innerRing.addEventListener("dragstart", (event:any) => {
         dragStartX = event.screenX;
         dragStartY = event.screenY;
-        View.innerRings.removeInnerRingDragPreview(event);
+        View.InnerRings.removeInnerRingDragPreview(event);
       });
 
       innerRing.addEventListener("dragend", (event:any) => {
@@ -80,7 +78,6 @@ export default class Controller_Drag implements Controller_DragType {
         dragEndX = event.screenX;
         dragEndY = event.screenY;
 
-    
 
         innerRing.classList.remove(`bg-${View.color}-50/50`)
 
@@ -92,7 +89,7 @@ export default class Controller_Drag implements Controller_DragType {
         let diam = Math.round(this.findDiam(posX, posY));
 
         if (diam < 970) {
-          View.innerRings.addInnerRing(diam);
+          View.InnerRings.addInnerRing(diam);
           Model.addNewInnerRingToRingList(diam)
           Model.storage.saveAllStorage(Model.ringList, Model.selectedId, View.color)
         }
@@ -100,8 +97,6 @@ export default class Controller_Drag implements Controller_DragType {
     };
 
     this.findDiam = (posX, posY) => Math.sqrt(posX ** 2 + posY ** 2) * 2;
-
-
 
 
   }

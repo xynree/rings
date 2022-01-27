@@ -23,6 +23,7 @@ export default class Controller_Text {
   constructor(Model:ModelType, View:ViewType){
 
     this.loadTextNodes = () => {
+      if (!Model.textList ||Model.textList.length < 1) return;
       let loadList = Model.textList.filter((textNode) => textNode.ringId === Model.selectedId)
       loadList.forEach(({body, x, y}) => {
         this.createNewNode(x,y, body);
@@ -57,7 +58,7 @@ export default class Controller_Text {
 
     this.createNewNode = (x,y, innerText='') => {
       let newTextNode = document.createElement('span');
-      newTextNode.classList.add('ringtext', 'p-2', 'absolute', 'min-w-4', 'h-8', 'focus:outline', `focus:outline-${View.color}-800`,`focus:bg-${View.color}-50`, 'bg-transparent', 'focus:ring-stone-900', `${View.default.styles.hover}`, `${View.default.styles.text2}`,'text-base');
+      newTextNode.classList.add('ringtext', 'p-2', 'absolute', 'min-w-4', 'h-8', 'focus:outline', `focus:outline-${View.color}-800`,`focus:bg-${View.color}-50`, 'bg-transparent', 'focus:ring-stone-900', `${View.Default.styles.hover}`, `${View.Default.styles.text2}`,'text-base');
       newTextNode.style.left=`${x}px`;
       newTextNode.style.top=`${y}px`;
       newTextNode.setAttribute('draggable', 'true')
@@ -70,11 +71,16 @@ export default class Controller_Text {
 
     this.removeOldNodes = () =>{
       let oldNodes = document.querySelectorAll('.ringtext');
-      oldNodes.forEach((node) => {
-        if(!node.id || parseInt(node.id.slice(0,1)) !== Model.selectedId ){
-          node.remove();
-        }
-      })
+
+      if (!oldNodes) return;
+        oldNodes.forEach((node) => {
+          if(!node.id || parseInt(node.id.slice(0,1)) !== Model.selectedId ){
+            node.remove();
+          }
+        })
+
+
+
     }
   }
 }

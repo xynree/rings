@@ -18,7 +18,10 @@ export default class Controller_Titles {
             });
         };
         this.loadDisplayedTitle = () => {
-            document.getElementById('textdisplaytitle').value = Model.ringList.filter((ringList) => ringList.id == Model.selectedId)[0].title;
+            let index = Model.ringList.findIndex((ring) => ring.id === Model.selectedId);
+            if (~index) {
+                document.getElementById('textdisplaytitle').value = Model.ringList[index].title;
+            }
         };
     }
 }

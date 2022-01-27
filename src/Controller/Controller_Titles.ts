@@ -33,7 +33,13 @@ export default class Controller_Titles implements Controller_TitlesType {
     }
 
     this.loadDisplayedTitle = () => {
-      (<HTMLInputElement>document.getElementById('textdisplaytitle')).value = Model.ringList.filter((ringList:ring) => ringList.id == Model.selectedId)[0].title;
+
+      let index = Model.ringList.findIndex((ring) => ring.id === Model.selectedId);
+
+      if (~index) {
+        (<HTMLInputElement>document.getElementById('textdisplaytitle')).value = Model.ringList[index].title;
+      }
+
     }
 
   }

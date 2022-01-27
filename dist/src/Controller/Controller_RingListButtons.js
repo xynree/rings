@@ -1,39 +1,35 @@
 export default class Controller_RingListButtons {
     constructor(Model, View) {
         this.HIGHLIGHT = "white";
-        this.attachRingTitleButtonListener = (id, e, loadDisplayedTitle) => {
-            e.preventDefault();
-            Model.selectedId = id;
-            View.innerRings.clearInnerRings();
-            Model.viewCommands.loadAllSelectedInnerRingsToDOM(Model.ringList, Model.selectedId);
-            this.clearSelectedRingListButton();
-            this.styleSelectedRingListButton();
-            Model.storage.saveAllStorage(Model.ringList, Model.selectedId, View.color);
-            this.loadRingListButtonTitles();
-            loadDisplayedTitle();
+        this.attachRingTitleButtonListener = (elem, id, loadDisplayedTitle) => {
+            elem.addEventListener('click', (e) => {
+                e.preventDefault();
+                console.log('ring title listener clumped');
+                Model.selectedId = id;
+                View.InnerRings.clearInnerRings();
+                Model.viewCommands.loadAllSelectedInnerRingsToDOM(Model.ringList, Model.selectedId);
+                this.clearSelectedRingListButton();
+                this.styleSelectedRingListButton();
+                Model.storage.saveAllStorage(Model.ringList, Model.selectedId, View.color);
+                this.loadRingListButtonTitles();
+                loadDisplayedTitle();
+            });
         };
         this.attachAllRingTitleButtonListeners = function (loadDisplayedTitle) {
-            let ringListButtons = document.querySelectorAll(".ringlistbutton");
-            ringListButtons.forEach((button) => {
-                button.addEventListener("click", (e) => {
-                    this.attachRingTitleButtonListener(parseInt(button.id.slice(7)), e, loadDisplayedTitle);
-                });
+            let ringListButtonGroup = document.querySelectorAll(".ringtitlebuttongroup");
+            ringListButtonGroup.forEach((group) => {
+                this.attachRingTitleButtonListener(group.firstElementChild, parseInt(group.id.slice(7)), loadDisplayedTitle);
+                this.attachDeleteListener(group.lastElementChild, Model.selectedId, loadDisplayedTitle);
             });
         };
         this.attachDeleteListener = (btn, loadDisplayedTitle) => {
             btn.addEventListener('click', (e) => {
-                let id;
-                if (e.target.parentNode.id === 'ringlistdelete' || e.target.parentNode.id === 'ringlistdeletespan') {
-                    id = e.target.parentNode.parentNode.id.slice(7);
-                    View.ringTitleButtons.clearButton(e.target.parentNode.parentNode);
-                }
-                else {
-                    id = parseInt(e.target.parentNode.id.slice(7));
-                    View.ringTitleButtons.clearButton(e.target.parentNode);
-                }
+                let id = parseInt(e.target.parentNode.id.slice(7));
+                console.log('delete listener clumped');
+                View.RingTitleButtons.clearButton(e.target.parentNode);
                 if (Model.selectedId === id) {
                     Model.selectedId = 1;
-                    View.innerRings.clearInnerRings();
+                    View.InnerRings.clearInnerRings();
                     Model.viewCommands.loadAllSelectedInnerRingsToDOM(Model.ringList, Model.selectedId);
                     loadDisplayedTitle();
                 }
@@ -50,16 +46,16 @@ export default class Controller_RingListButtons {
             });
         };
         this.loadRingListButtonTitles = () => {
-            let ringListButtons = document.querySelectorAll(".ringlistbutton");
+            let ringListButtons = document.querySelectorAll("#ringlistbutton");
             ringListButtons.forEach((button) => {
-                let selectedTitle = Model.ringList.filter((ring) => ring.id === parseInt(button.id.slice(7)))[0].title;
-                button.firstElementChild.innerText = selectedTitle;
+                let selectedTitle = Model.ringList.filter((ring) => ring.id === parseInt(button.parentNode.id.slice(7)))[0].title;
+                button.innerText = selectedTitle;
             });
         };
         this.clearSelectedRingListButton = function () {
-            let ringListButtons = document.querySelectorAll('.ringlistbutton');
+            let ringListButtons = document.querySelectorAll('#ringlistbutton');
             ringListButtons.forEach((button) => {
-                if (parseInt(button.id.slice(7)) !== Model.selectedId) {
+                if (parseInt(button.parentNode.id.slice(7)) !== Model.selectedId) {
                     button.classList.remove(`bg-${View.color}-100`);
                     button.classList.add(`bg-transparent`);
                 }
@@ -67,20 +63,18 @@ export default class Controller_RingListButtons {
         };
         this.styleSelectedRingListButton = function () {
             if (Model.selectedId !== 1) {
-                let ringListButtons = document.querySelectorAll('.ringlistbutton');
+                let ringListButtons = document.querySelectorAll('#ringlistbutton');
                 ringListButtons.forEach((button) => {
-                    if (parseInt(button.id.slice(7)) == Model.selectedId) {
+                    if (parseInt(button.parentNode.id.slice(7)) === Model.selectedId) {
                         button.classList.remove(`bg-transparent`);
                         button.classList.add(`bg-${View.color}-100`);
                     }
                 });
             }
             else {
-                let ringListButton = document.querySelector('.ringlistbutton');
-                if (parseInt(ringListButton.id.slice(7)) == Model.selectedId) {
-                    ringListButton.classList.remove(`bg-transparent`);
-                    ringListButton.classList.add(`bg-${View.color}-100`);
-                }
+                let ringListButton = document.querySelector('#ringlistbutton');
+                ringListButton.classList.remove(`bg-transparent`);
+                ringListButton.classList.add(`bg-${View.color}-100`);
             }
         };
         this.findNewRingTitleButton = (id) => document.getElementById(`ringid_${id}`);

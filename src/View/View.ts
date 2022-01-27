@@ -6,9 +6,9 @@ export interface ViewType {
   color: string;
   colorList: string[];
 
-  innerRings: View_InnerRingsType;
-  ringTitleButtons: View_RingTitleButtonsType;
-  default: View_DefaultType;
+  InnerRings: View_InnerRingsType;
+  RingTitleButtons: View_RingTitleButtonsType;
+  Default: View_DefaultType;
   styleBackground: (elem:HTMLElement, color:string) => void;
 }
 
@@ -17,9 +17,9 @@ export default class View implements ViewType {
   colorList: string[];
 
 
-  innerRings: View_InnerRingsType;
-  ringTitleButtons: View_RingTitleButtonsType;
-  default: View_DefaultType;
+  InnerRings: View_InnerRingsType;
+  RingTitleButtons: View_RingTitleButtonsType;
+  Default: View_DefaultType;
   styleBackground: (elem:HTMLElement, color:string) => void;
 
   constructor() {
@@ -27,9 +27,9 @@ export default class View implements ViewType {
     this.color = 'amber';
   
 
-    this.innerRings = new View_InnerRings(this.color);
-    this.ringTitleButtons = new View_RingTitleButtons();
-    this.default = new View_Default(this.color);
+    this.InnerRings = new View_InnerRings(this.color);
+    this.RingTitleButtons = new View_RingTitleButtons();
+    this.Default = new View_Default(this.color);
     this.styleBackground = (elem, color) => elem.style.background = color
   }
 

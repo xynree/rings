@@ -32,7 +32,7 @@ export default class Controller_Drag {
             innerRing.addEventListener("dragstart", (event) => {
                 dragStartX = event.screenX;
                 dragStartY = event.screenY;
-                View.innerRings.removeInnerRingDragPreview(event);
+                View.InnerRings.removeInnerRingDragPreview(event);
             });
             innerRing.addEventListener("dragend", (event) => {
                 console.log('drag end run');
@@ -45,7 +45,7 @@ export default class Controller_Drag {
                 let posY = Math.abs(dragEndY - dragStartY);
                 let diam = Math.round(this.findDiam(posX, posY));
                 if (diam < 970) {
-                    View.innerRings.addInnerRing(diam);
+                    View.InnerRings.addInnerRing(diam);
                     Model.addNewInnerRingToRingList(diam);
                     Model.storage.saveAllStorage(Model.ringList, Model.selectedId, View.color);
                 }

@@ -23,15 +23,15 @@ export default class Controller_Default implements Controller_DefaultType{
     }
 
     this.loadDefaultRingTitleButtonListener = (attachRingTitleButtonListener, loadDisplayedTitle) => {
-      let ringListButton = document.querySelector('.ringlistbutton');
-      ringListButton.addEventListener('click', (e) =>{
-        attachRingTitleButtonListener(parseInt(ringListButton.id.slice(7)), e, loadDisplayedTitle)
-    })
+      let ringListButton = document.querySelector('#ringlistbutton');
+      let id = parseInt((<HTMLElement>ringListButton.parentNode).id.slice(7));
+      attachRingTitleButtonListener(ringListButton,id, loadDisplayedTitle)
+
     }
 
     this.styleDefaultRingButton = () => {
-      let ringListButton = document.querySelector('.ringlistbutton')
-      View.styleBackground(<HTMLElement>ringListButton, "white")
+      let ringListButton = document.querySelector('#ringlistbutton')
+      ringListButton.classList.add(View.Default.styles.highlight)
     }
 
 
