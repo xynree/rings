@@ -18,6 +18,8 @@ export default class Controller  {
   
   attachAddNewRingListener: () => void;
   attachClickListener_ClearStorage: () => void;
+  attachColorButtonListener: () => void;
+
 
   constructor(Model:ModelType, View:ViewType) {
 
@@ -29,6 +31,7 @@ export default class Controller  {
 
     this.setup = function() {
       View.default.loadDefaultView();
+      this.attachColorButtonListener();
       this.attachAddNewRingListener();
       this.Drag.attachDragListener_Styles();
       this.Drag.attachDragListener_NewInnerRing();
@@ -56,6 +59,24 @@ export default class Controller  {
       this.RingListButtons.loadRingListButtonTitles();
     }
 
+    this.attachColorButtonListener = () => {
+
+      let colorbutton = document.getElementById('colorbutton');
+      colorbutton.addEventListener('click', () => {
+
+
+        let colorIndex = View.colorList.findIndex(color => color ===View.color);
+
+        if (colorIndex+1 < View.colorList.length) {
+          View.color = View.colorList[colorIndex+1]
+        } else View.color = View.colorList[0];
+        console.log(View.color);
+
+
+            
+          
+      })
+    }
 
 
 

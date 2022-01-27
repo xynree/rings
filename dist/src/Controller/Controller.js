@@ -12,6 +12,7 @@ export default class Controller {
         this.Text = new Controller_Text(Model, View);
         this.setup = function () {
             View.default.loadDefaultView();
+            this.attachColorButtonListener();
             this.attachAddNewRingListener();
             this.Drag.attachDragListener_Styles();
             this.Drag.attachDragListener_NewInnerRing();
@@ -34,6 +35,18 @@ export default class Controller {
             this.Titles.loadDisplayedTitle();
             this.Titles.attachDisplayedTitleListener(this.RingListButtons.loadRingListButtonTitles);
             this.RingListButtons.loadRingListButtonTitles();
+        };
+        this.attachColorButtonListener = () => {
+            let colorbutton = document.getElementById('colorbutton');
+            colorbutton.addEventListener('click', () => {
+                let colorIndex = View.colorList.findIndex(color => color === View.color);
+                if (colorIndex + 1 < View.colorList.length) {
+                    View.color = View.colorList[colorIndex + 1];
+                }
+                else
+                    View.color = View.colorList[0];
+                console.log(View.color);
+            });
         };
         this.attachAddNewRingListener = function () {
             let newRing = document.getElementById("newring");

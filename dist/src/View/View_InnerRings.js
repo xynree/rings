@@ -1,10 +1,10 @@
 export default class View_InnerRings {
-    constructor() {
+    constructor(color) {
         this.addInnerRing = function (value) {
             let outerRing = document.querySelector("#oring");
             let newRing = document.createElement("div");
             newRing.innerText = "";
-            newRing.classList.add("absolute", "rounded-full", "border", "border-stone-700", "bg-transparent", "m-12", "flex", "justify-center", "items-center");
+            newRing.classList.add("absolute", "rounded-full", "border", `border-${color}-700`, "bg-transparent", "m-12", "flex", "justify-center", "items-center");
             newRing.id = 'innerring';
             newRing.style.width = `${value}px`;
             newRing.style.height = `${value}px`;
@@ -21,7 +21,7 @@ export default class View_InnerRings {
             dragShadow.style.display = "none";
             document.body.appendChild(dragShadow);
             e.dataTransfer.setDragImage(dragShadow, 0, 0);
-            e.target.classList.add("bg-stone-200");
+            e.target.classList.add(`bg-${color}-200`);
         };
     }
 }

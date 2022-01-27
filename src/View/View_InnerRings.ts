@@ -12,7 +12,7 @@ export default class View_InnerRings implements View_InnerRingsType {
   clearInnerRings: () => void;
   removeInnerRingDragPreview: (e:any) => void;
   
-  constructor(){
+  constructor(color:string){
     this.addInnerRing = function (value) {
       let outerRing = document.querySelector("#oring");
       let newRing = document.createElement("div");
@@ -21,7 +21,7 @@ export default class View_InnerRings implements View_InnerRingsType {
         "absolute",
         "rounded-full",
         "border",
-        "border-stone-700",
+        `border-${color}-700`,
         "bg-transparent",
         "m-12",
         "flex",
@@ -46,7 +46,7 @@ export default class View_InnerRings implements View_InnerRingsType {
       dragShadow.style.display = "none";
       document.body.appendChild(dragShadow);
       e.dataTransfer.setDragImage(dragShadow, 0, 0);
-      e.target.classList.add("bg-stone-200");
+      e.target.classList.add(`bg-${color}-200`);
     }
 
   }

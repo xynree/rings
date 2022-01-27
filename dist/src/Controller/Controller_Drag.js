@@ -3,17 +3,17 @@ export default class Controller_Drag {
         this.attachDragListener_Styles = function () {
             document.addEventListener("dragenter", function (event) {
                 if (event.target.classList.contains("dragzone")) {
-                    event.target.classList.add("bg-stone-200");
+                    event.target.classList.add(`bg-${View.color}-100`);
                 }
             }, false);
             document.addEventListener("dragleave", function (event) {
                 if (event.target.classList.contains("dragzone")) {
-                    event.target.classList.remove("bg-stone-200");
+                    event.target.classList.remove(`bg-${View.color}-100`);
                 }
             }, false);
             document.addEventListener("dragend", function (event) {
                 if (event.target.classList.contains("dragzone")) {
-                    event.target.classList.remove("bg-stone-200");
+                    event.target.classList.remove(`bg-${View.color}-100`);
                 }
             }, false);
         };
@@ -24,10 +24,10 @@ export default class Controller_Drag {
             let dragEndY;
             let innerRing = document.querySelector("#iring");
             innerRing.addEventListener("mouseenter", (event) => {
-                event.target.classList.add("bg-stone-300/50");
+                event.target.classList.add(`bg-${View.color}-50/50`);
             });
             innerRing.addEventListener("mouseout", (event) => {
-                event.target.classList.remove("bg-stone-300/50");
+                event.target.classList.remove(`bg-${View.color}-50/50`);
             });
             innerRing.addEventListener("dragstart", (event) => {
                 dragStartX = event.screenX;
@@ -39,7 +39,7 @@ export default class Controller_Drag {
                 event.preventDefault();
                 dragEndX = event.screenX;
                 dragEndY = event.screenY;
-                event.target.classList.remove("bg-stone-300/50");
+                event.target.classList.remove(`bg-${View.color}-50/50`);
                 let posX = Math.abs(dragEndX - dragStartX);
                 let posY = Math.abs(dragEndY - dragStartY);
                 let diam = Math.round(this.findDiam(posX, posY));

@@ -1,28 +1,29 @@
 export default class View_Default {
     constructor(color) {
         this.styles = {
-            text1: `text-${color}-700`,
-            text2: `text-${color}-500`,
+            text1: `text-${color}-900`,
+            text2: `text-${color}-600`,
             border: `border-${color}-800`,
-            highlight: `bg-${color}-50`,
-            hover: `bg-${color}-100`,
+            highlight: `bg-${color}-100`,
+            hover: `hover:bg-${color}-200`,
             focus: `focus:ring-${color}-900`,
             selection: `selection:ring-${color}-200`,
-            caret: `caret-${color}-800`
+            caret: `caret-${color}-800`,
+            bg: `bg-${color}-800`
         };
         this.defaultView = `<div class="flex left-0 right-0 m-auto w-2/3 md:w-4/5 h-screen  justify-center items-center">
     <div
       class="w-1/4 h-full flex flex-col justify-center "
     >
       <div>
-      <input type='text' class="text-4xl bg-transparent text-left ${this.styles.caret} ${this.styles.selection} mb-4 focus:outline-none ${this.styles.focus}" id='textdisplaytitle' required value='My Ring Title'/>
+      <input type='text' class="text-4xl bg-transparent text-left ${this.styles.caret} ${this.styles.selection} mb-4 focus:outline-none ${this.styles.focus} ${this.styles.text1}" id='textdisplaytitle'  required value='My Ring Title'/>
       </div>
       <div id='newRingGroup' class=' overflow-hidden hover:overflow-scroll h-1/3 scroll-smooth'>
         <button
           id="ringid_1"
           class="ringlistbutton border border-dotted ${this.styles.border} hover:border-solid ${this.styles.text1} w-full mt-2 mb-2 flex justify-between text-center items-center "
         >
-          <div class="p-2 m-auto w-full h-full text-left text-sm ringlisttitle bg-transparent">Ring Title</div>
+          <div class="p-2 m-auto w-full h-full text-left text-sm  ringlisttitle bg-transparent ${this.styles.text2} ">Ring Title</div>
           <div id="ringlistdelete" class="w-1/5 h-100 p-2 ${this.styles.highlight} ${this.styles.hover} ">
             <span class="${this.styles.text2} bg-transparent">x</span>
           </div>
@@ -40,6 +41,7 @@ export default class View_Default {
     >
       <span class="${this.styles.text2} text-sm ">x </span> Clear Save
     </button>
+    <button id='colorbutton' class='m-8 mt-1 p-2 border w-4 h-4 ${this.styles.border} ${this.styles.bg}'/></button>
   
     </div>
     <div class="w-screen flex flex-col justify-between items-between">
