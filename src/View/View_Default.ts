@@ -16,7 +16,7 @@ export default class View_Default implements View_DefaultType{
     text1: `text-${color}-700`, 
     text2: `text-${color}-500`, 
     border: `border-${color}-800`, 
-    highlight: `bg-${color}-50`, 
+    highlight: `bg-${color}-50/25`, 
     hover: `bg-${color}-100`,
     focus: `focus:ring-${color}-900`, 
     selection: `selection:ring-${color}-200`, 
