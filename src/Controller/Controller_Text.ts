@@ -5,11 +5,10 @@ export interface Controller_TextType {
 
   attachDblClickListener: () => void;
   selectedTextId: number;
-  textList: textNode[];
+  textNodeList: textNode[];
   addNewTextNodeToTextList: (textNode:textNode) => void;
-
-
-
+  removeOldNodes: () => void;
+  createNewNode: (x:number, y:number) => HTMLElement;
 }
 
 type textNode = {ringId:number, textId:number, body:string, x:number, y:number}
@@ -18,62 +17,65 @@ export default class Controller_Text {
 
   attachDblClickListener: () => void;
   selectedTextId: number;
-  textList: textNode[];
+  textNodeList: textNode[];
   addNewTextNodeToTextList: (textNode:textNode) => void;
+  removeOldNodes: () => void;
+  createNewNode: (x:number, y:number) => HTMLElement;
 
 
   constructor(Model:ModelType, View:ViewType){
 
     this.selectedTextId=0;
-    this.textList = []
+    this.textNodeList = []
 
     this.attachDblClickListener = () => {
-      document.addEventListener('dblclick', (e) => {
+      document.addEventListener('dblclick', (e:any) => {
 
         if (e.target.id !== 'oring' && e.target.id !== 'innerring') return;
 
-        let oldNodes = document.querySelectorAll('.ringtext');
+        this.removeOldNodes();
 
-        console.log(e.target)
-        oldNodes.forEach((node) => {
-          if(!node.id){
-            node.remove();
+        let newTextNode = this.createNewNode(e.clientX, e.clientY);
+
+  
+        newTextNode.addEventListener('keydown', (d:any) => {
+          if (d.code === "Enter") {  
+          this.selectedTextId++;
+          newTextNode.id = `${Model.selectedId}_${this.selectedTextId}`
+          this.addNewTextNodeToTextList({ringId:Model.selectedId, textId:this.selectedTextId, body:d.target.textContent, x:e.clientX, y:e.clientY  })
+          newTextNode.blur();
+
           }
         })
-
-        let newInput = document.createElement('input');
-
-          newInput.classList.add('ringtext', 'p-2', 'absolute', 'w-auto', 'h-8', 'focus:outline', 'focus:outline-slate-800','focus:bg-slate-50', 'bg-transparent', 'focus:ring-stone-900', 'hover:bg-slate-50');
-          newInput.style.left=`${e.clientX}px`;
-          newInput.style.top=`${e.clientY}px`;
-          newInput.setAttribute('draggable', 'true')
-          document.body.appendChild(newInput);
-          newInput.focus();
-          console.log('a child was appended', newInput, e.clientX, e.clientY)
-  
-          newInput.addEventListener('keydown', (d) => {
-            if (d.code === "Enter") {  
-
-            d.preventDefault();
-
-            this.selectedTextId++;
-            newInput.id = `${Model.selectedId}_${this.selectedTextId}`
-            this.addNewTextNodeToTextList({ringId:Model.selectedId, textId:this.selectedTextId, body:(<HTMLInputElement>d.target).value, x:e.clientX, y:e.clientY  })
-            newInput.blur();
-
-            }
-          })
-
-        
-
-
       })
     }
 
     this.addNewTextNodeToTextList= ({ringId, textId, body, x, y}) => {
-      this.textList.push({ ringId, textId, body, x, y })
-      console.log(this.textList)
+      this.textNodeList.push({ ringId, textId, body, x, y })
+      console.log(this.textNodeList)
     }
 
+    this.createNewNode = (x,y) => {
+
+      let newTextNode = document.createElement('span');
+      newTextNode.classList.add('ringtext', 'p-2', 'absolute', 'min-w-4', 'h-8', 'focus:outline', 'focus:outline-slate-800','focus:bg-slate-50', 'bg-transparent', 'focus:ring-stone-900', 'hover:bg-slate-50', 'text-base');
+      newTextNode.style.left=`${x}px`;
+      newTextNode.style.top=`${y}px`;
+      newTextNode.setAttribute('draggable', 'true')
+      newTextNode.setAttribute('contenteditable', '');
+      document.body.appendChild(newTextNode);
+      newTextNode.focus();
+      return newTextNode;
+    }
+
+    this.removeOldNodes = () =>{
+
+      let oldNodes = document.querySelectorAll('.ringtext');
+      oldNodes.forEach((node) => {
+        if(!node.id){
+          node.remove();
+        }
+      })
+    }
   }
 }

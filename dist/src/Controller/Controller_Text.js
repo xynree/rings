@@ -1,40 +1,45 @@
 export default class Controller_Text {
     constructor(Model, View) {
         this.selectedTextId = 0;
-        this.textList = [];
+        this.textNodeList = [];
         this.attachDblClickListener = () => {
             document.addEventListener('dblclick', (e) => {
                 if (e.target.id !== 'oring' && e.target.id !== 'innerring')
                     return;
-                let oldNodes = document.querySelectorAll('.ringtext');
-                console.log(e.target);
-                oldNodes.forEach((node) => {
-                    if (!node.id) {
-                        node.remove();
-                    }
-                });
-                let newInput = document.createElement('input');
-                newInput.classList.add('ringtext', 'p-2', 'absolute', 'w-auto', 'min-w-36', 'h-8', 'focus:outline', 'focus:outline-slate-800', 'focus:bg-slate-50', 'bg-transparent', 'focus:ring-stone-900', 'hover:bg-slate-50');
-                newInput.style.left = `${e.clientX}px`;
-                newInput.style.top = `${e.clientY}px`;
-                newInput.setAttribute('draggable', 'true');
-                document.body.appendChild(newInput);
-                newInput.focus();
-                console.log('a child was appended', newInput, e.clientX, e.clientY);
-                newInput.addEventListener('keydown', (d) => {
+                this.removeOldNodes();
+                let newTextNode = this.createNewNode(e.clientX, e.clientY);
+                newTextNode.addEventListener('keydown', (d) => {
                     if (d.code === "Enter") {
-                        d.preventDefault();
                         this.selectedTextId++;
-                        newInput.id = `${Model.selectedId}_${this.selectedTextId}`;
-                        this.addNewTextNodeToTextList({ ringId: Model.selectedId, textId: this.selectedTextId, body: d.target.value, x: e.clientX, y: e.clientY });
-                        newInput.blur();
+                        newTextNode.id = `${Model.selectedId}_${this.selectedTextId}`;
+                        this.addNewTextNodeToTextList({ ringId: Model.selectedId, textId: this.selectedTextId, body: d.target.textContent, x: e.clientX, y: e.clientY });
+                        newTextNode.blur();
                     }
                 });
             });
         };
         this.addNewTextNodeToTextList = ({ ringId, textId, body, x, y }) => {
-            this.textList.push({ ringId, textId, body, x, y });
-            console.log(this.textList);
+            this.textNodeList.push({ ringId, textId, body, x, y });
+            console.log(this.textNodeList);
+        };
+        this.createNewNode = (x, y) => {
+            let newTextNode = document.createElement('span');
+            newTextNode.classList.add('ringtext', 'p-2', 'absolute', 'min-w-4', 'h-8', 'focus:outline', 'focus:outline-slate-800', 'focus:bg-slate-50', 'bg-transparent', 'focus:ring-stone-900', 'hover:bg-slate-50', 'text-base');
+            newTextNode.style.left = `${x}px`;
+            newTextNode.style.top = `${y}px`;
+            newTextNode.setAttribute('draggable', 'true');
+            newTextNode.setAttribute('contenteditable', '');
+            document.body.appendChild(newTextNode);
+            newTextNode.focus();
+            return newTextNode;
+        };
+        this.removeOldNodes = () => {
+            let oldNodes = document.querySelectorAll('.ringtext');
+            oldNodes.forEach((node) => {
+                if (!node.id) {
+                    node.remove();
+                }
+            });
         };
     }
 }
