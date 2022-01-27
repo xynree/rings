@@ -48,6 +48,7 @@ export default class Controller {
                 this.RingListButtons.styleSelectedRingListButton();
                 Model.storage.saveAllStorage(Model.ringList, Model.selectedId);
                 this.RingListButtons.loadRingListButtonTitles();
+                this.Titles.loadDisplayedTitle();
                 // event listener for new ring title button
                 let newRingTitleButton = this.RingListButtons.findNewRingTitleButton(Model.selectedId);
                 newRingTitleButton.addEventListener('click', (e) => {
