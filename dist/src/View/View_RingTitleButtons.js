@@ -14,6 +14,9 @@ export default class View_RingTitleButtons {
                 newRingGroup.removeChild(newRingGroup.lastChild);
             }
         };
+        this.clearButton = (elem) => {
+            elem.remove();
+        };
     }
 }
 //# sourceMappingURL=View_RingTitleButtons.js.map

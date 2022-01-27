@@ -8,7 +8,7 @@ export default class Controller_RingListButtons {
             Model.viewCommands.loadAllSelectedInnerRingsToDOM(Model.ringList, Model.selectedId);
             this.clearSelectedRingListButton();
             this.styleSelectedRingListButton();
-            Model.storage.saveAllStorage(Model.ringList, Model.selectedId);
+            Model.storage.saveAllStorage(Model.ringList, Model.selectedId, View.color);
             this.loadRingListButtonTitles();
             loadDisplayedTitle();
         };
@@ -18,6 +18,35 @@ export default class Controller_RingListButtons {
                 button.addEventListener("click", (e) => {
                     this.attachRingTitleButtonListener(parseInt(button.id.slice(7)), e, loadDisplayedTitle);
                 });
+            });
+        };
+        this.attachDeleteListener = (btn, loadDisplayedTitle) => {
+            btn.addEventListener('click', (e) => {
+                let id;
+                if (e.target.parentNode.id === 'ringlistdelete' || e.target.parentNode.id === 'ringlistdeletespan') {
+                    id = e.target.parentNode.parentNode.id.slice(7);
+                    View.ringTitleButtons.clearButton(e.target.parentNode.parentNode);
+                }
+                else {
+                    id = parseInt(e.target.parentNode.id.slice(7));
+                    View.ringTitleButtons.clearButton(e.target.parentNode);
+                }
+                if (Model.selectedId === id) {
+                    Model.selectedId = 1;
+                    View.innerRings.clearInnerRings();
+                    Model.viewCommands.loadAllSelectedInnerRingsToDOM(Model.ringList, Model.selectedId);
+                    loadDisplayedTitle();
+                }
+                let filteredList = Model.ringList.filter((ring) => ring.id !== id);
+                Model.ringList = filteredList;
+                console.log(Model.ringList, filteredList);
+                Model.storage.saveAllStorage(Model.ringList, Model.selectedId, View.color);
+            });
+        };
+        this.attachAllDeleteListeners = (loadDisplayedTitle) => {
+            let delbtns = document.querySelectorAll('.ringlistdelete');
+            delbtns.forEach((btn) => {
+                this.attachDeleteListener(btn, loadDisplayedTitle);
             });
         };
         this.loadRingListButtonTitles = () => {
@@ -31,7 +60,8 @@ export default class Controller_RingListButtons {
             let ringListButtons = document.querySelectorAll('.ringlistbutton');
             ringListButtons.forEach((button) => {
                 if (parseInt(button.id.slice(7)) !== Model.selectedId) {
-                    View.styleBackground(button, "transparent");
+                    button.classList.remove(`bg-${View.color}-100`);
+                    button.classList.add(`bg-transparent`);
                 }
             });
         };
@@ -40,14 +70,16 @@ export default class Controller_RingListButtons {
                 let ringListButtons = document.querySelectorAll('.ringlistbutton');
                 ringListButtons.forEach((button) => {
                     if (parseInt(button.id.slice(7)) == Model.selectedId) {
-                        View.styleBackground(button, this.HIGHLIGHT);
+                        button.classList.remove(`bg-transparent`);
+                        button.classList.add(`bg-${View.color}-100`);
                     }
                 });
             }
             else {
                 let ringListButton = document.querySelector('.ringlistbutton');
                 if (parseInt(ringListButton.id.slice(7)) == Model.selectedId) {
-                    View.styleBackground(ringListButton, this.HIGHLIGHT);
+                    ringListButton.classList.remove(`bg-transparent`);
+                    ringListButton.classList.add(`bg-${View.color}-100`);
                 }
             }
         };

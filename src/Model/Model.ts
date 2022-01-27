@@ -11,29 +11,37 @@ export interface ModelType {
   ringList:ring[];
   storage: Model_StorageType;
   viewCommands: any;
+  textList: any[];
   addNewInnerRingToRingList: (val: number) => void;
   addNewRingToRingListFromSelectedId: (val: number) => void;
   resetModelToDefault: () => void;
+  selectedTextId: number;
+
 }
 
 export default class Model implements ModelType {
   selectedId: number;
   selectedTitle: string;
   ringList:ring[];
+  textList: any[];
   storage: Model_StorageType;
   viewCommands: any;
   addNewInnerRingToRingList: (val: number) => void;
   addNewRingToRingListFromSelectedId: (val: number) => void;
   resetModelToDefault: () => void;
+  selectedTextId: number;
+
 
   constructor(View:ViewType) {
     this.viewCommands = new Model_ViewCommands(View);
     this.selectedId = 1;
+    this.selectedTextId = 0;
     this.selectedTitle = "Ring Title";
     this.ringList = [
       { id: 1, title: "Ring Title", innerRings: [] },
     ];
     this.storage = new Model_Storage();
+    this.textList = [];
 
     this.addNewInnerRingToRingList = (val:number ) => {
       this.ringList.forEach(({ id, innerRings }) => {

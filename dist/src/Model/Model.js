@@ -4,11 +4,13 @@ export default class Model {
     constructor(View) {
         this.viewCommands = new Model_ViewCommands(View);
         this.selectedId = 1;
+        this.selectedTextId = 0;
         this.selectedTitle = "Ring Title";
         this.ringList = [
             { id: 1, title: "Ring Title", innerRings: [] },
         ];
         this.storage = new Model_Storage();
+        this.textList = [];
         this.addNewInnerRingToRingList = (val) => {
             this.ringList.forEach(({ id, innerRings }) => {
                 if (id === this.selectedId) {

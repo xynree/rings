@@ -5,6 +5,8 @@ import Controller_Drag, { Controller_DragType } from './Controller_Drag.js'
 import Controller_RingListButtons, { Controller_RingListButtonsType } from './Controller_RingListButtons.js'
 import Controller_Titles, {Controller_TitlesType} from './Controller_Titles.js'
 import Controller_Text, { Controller_TextType } from './Controller_Text.js'
+import View_InnerRings from '../View/View_InnerRings.js'
+import View_Default from '../View/View_Default.js'
 
 export default class Controller  {
 
@@ -13,6 +15,8 @@ export default class Controller  {
   RingListButtons: Controller_RingListButtonsType;
   Titles: Controller_TitlesType;
   Text: Controller_TextType;
+
+  clear: () => void;
 
   setup: () => void;
   
@@ -29,7 +33,16 @@ export default class Controller  {
     this.Titles = new Controller_Titles(Model,View);
     this.Text = new Controller_Text(Model, View);
 
+    this.clear = () => {
+      document.body.innerHTML = '';
+    }
+
     this.setup = function() {
+      if(Model.storage.hasColor()){
+        View.color = Model.storage.loadColorFromStorage();
+        View.innerRings = new View_InnerRings(View.color)
+        View.default = new View_Default(View.color);
+      }
       View.default.loadDefaultView();
       this.attachColorButtonListener();
       this.attachAddNewRingListener();
@@ -41,18 +54,22 @@ export default class Controller  {
       if (Model.storage.hasStoredRings()){
         Model.selectedId = Model.storage.loadSelectedIdFromStorage();
         Model.ringList = Model.storage.loadRingListFromStorage();
+        Model.textList = Model.storage.loadText();
+        this.text.removeOldNodes();
+        this.Text.loadTextNodes();
+
         View.ringTitleButtons.clearRingTitleButtons();
         Model.viewCommands.loadRingTitleButtonsToDOM(Model.ringList);
         Model.viewCommands.loadAllSelectedInnerRingsToDOM(Model.ringList, Model.selectedId);
-
         this.RingListButtons.attachAllRingTitleButtonListeners(this.Titles.loadDisplayedTitle);
         this.RingListButtons.clearSelectedRingListButton(Model.selectedId);
         this.RingListButtons.styleSelectedRingListButton();
+        this.RingListButtons.attachAllDeleteListeners(this.Titles.loadDisplayedTitle);
+
 
       } else{
         this.Default.loadDefaults(this.RingListButtons.attachRingTitleButtonListener, this.Titles.loadDisplayedTitle);
-
-        Model.storage.saveAllStorage(Model.ringList, Model.selectedId);
+        Model.storage.saveAllStorage(Model.ringList, Model.selectedId, View.color);
       }
       this.Titles.loadDisplayedTitle();
       this.Titles.attachDisplayedTitleListener(this.RingListButtons.loadRingListButtonTitles);
@@ -63,21 +80,21 @@ export default class Controller  {
 
       let colorbutton = document.getElementById('colorbutton');
       colorbutton.addEventListener('click', () => {
-
-
-        let colorIndex = View.colorList.findIndex(color => color ===View.color);
+        let colorIndex = View.colorList.findIndex(color => color === View.color);
 
         if (colorIndex+1 < View.colorList.length) {
           View.color = View.colorList[colorIndex+1]
         } else View.color = View.colorList[0];
         console.log(View.color);
+        Model.storage.saveColor(View.color);
 
+        this.clear();
+        this.setup();
 
-            
-          
+    
+    
       })
     }
-
 
 
     this.attachAddNewRingListener = function () {
@@ -94,20 +111,24 @@ export default class Controller  {
         this.RingListButtons.clearSelectedRingListButton();
 
         this.RingListButtons.styleSelectedRingListButton();
-        Model.storage.saveAllStorage(Model.ringList, Model.selectedId);
+        Model.storage.saveAllStorage(Model.ringList, Model.selectedId, View.color);
         this.RingListButtons.loadRingListButtonTitles();
 
         this.Titles.loadDisplayedTitle();
 
         // event listener for new ring title button
         let newRingTitleButton = this.RingListButtons.findNewRingTitleButton(Model.selectedId);
+        this.RingListButtons.attachDeleteListener(newRingTitleButton.lastElementChild, this.Titles.loadDisplayedTitle);
 
         newRingTitleButton.addEventListener('click', (e:any) => 
-      {     
-        console.log(e.target.parentNode, e.target.parentNode.id)   
+      { 
+        
+        if (e.target.parentNode.id ===  'ringlistdelete' || e.target.parentNode.id === 'ringlistdeletespan') return;
+
         this.RingListButtons.attachRingTitleButtonListener(
         parseInt(e.target.parentNode.id.slice(7)), 
         e, this.Titles.loadDisplayedTitle)
+
 
       })
       }); 

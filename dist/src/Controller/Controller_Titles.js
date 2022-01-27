@@ -9,7 +9,7 @@ export default class Controller_Titles {
                         if (ring.id === Model.selectedId) {
                             console.log(e.target.value);
                             ring.title = e.target.value;
-                            Model.storage.saveAllStorage(Model.ringList, Model.selectedId);
+                            Model.storage.saveAllStorage(Model.ringList, Model.selectedId, View.color);
                         }
                     });
                     node.blur();

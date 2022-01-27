@@ -1,11 +1,14 @@
 export interface View_RingTitleButtonsType {
   addRingTitleButton: (id:number) => void;
   clearRingTitleButtons: () => void;
+  clearButton: (elem:HTMLElement) => void;
+
 }
 
 export default class View_RingTitleButtons implements View_RingTitleButtonsType {
   addRingTitleButton: (id:number) => void;
   clearRingTitleButtons: () => void;
+  clearButton: (elem:HTMLElement) => void;
   constructor(){
     this.addRingTitleButton = (id) => {
       let newRingGroup = document.getElementById("newRingGroup");
@@ -21,6 +24,12 @@ export default class View_RingTitleButtons implements View_RingTitleButtonsType 
       while (newRingGroup.children.length > 1) {
         newRingGroup.removeChild(newRingGroup.lastChild);
       }
+  }
+
+  this.clearButton = (elem) => {
+
+    elem.remove();
+
   }
 
 

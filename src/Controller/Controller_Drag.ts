@@ -24,7 +24,7 @@ export default class Controller_Drag implements Controller_DragType {
         "dragenter",
         function (event:any) {
           if (event.target.classList.contains("dragzone")) {
-            event.target.classList.add(`bg-${View.color}-100`);
+            event.target.classList.add(`bg-${View.color}-50/50`);
           }
         },
         false
@@ -34,7 +34,7 @@ export default class Controller_Drag implements Controller_DragType {
         "dragleave",
         function (event:any) {
           if (event.target.classList.contains("dragzone")) {
-            event.target.classList.remove(`bg-${View.color}-100`);
+            event.target.classList.remove(`bg-${View.color}-50/50`);
           }
         },
         false
@@ -44,7 +44,7 @@ export default class Controller_Drag implements Controller_DragType {
         "dragend",
         function (event:any) {
           if (event.target.classList.contains("dragzone")) {
-            event.target.classList.remove(`bg-${View.color}-100`);
+            event.target.classList.remove(`bg-${View.color}-50/50`);
           }
         },
         false
@@ -80,6 +80,10 @@ export default class Controller_Drag implements Controller_DragType {
         dragEndX = event.screenX;
         dragEndY = event.screenY;
 
+    
+
+        innerRing.classList.remove(`bg-${View.color}-50/50`)
+
         event.target.classList.remove(`bg-${View.color}-50/50`);
 
         let posX = Math.abs(dragEndX - dragStartX);
@@ -90,7 +94,7 @@ export default class Controller_Drag implements Controller_DragType {
         if (diam < 970) {
           View.innerRings.addInnerRing(diam);
           Model.addNewInnerRingToRingList(diam)
-          Model.storage.saveAllStorage(Model.ringList, Model.selectedId)
+          Model.storage.saveAllStorage(Model.ringList, Model.selectedId, View.color)
         }
       });
     };

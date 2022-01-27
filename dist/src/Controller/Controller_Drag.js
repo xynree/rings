@@ -3,17 +3,17 @@ export default class Controller_Drag {
         this.attachDragListener_Styles = function () {
             document.addEventListener("dragenter", function (event) {
                 if (event.target.classList.contains("dragzone")) {
-                    event.target.classList.add(`bg-${View.color}-100`);
+                    event.target.classList.add(`bg-${View.color}-50/50`);
                 }
             }, false);
             document.addEventListener("dragleave", function (event) {
                 if (event.target.classList.contains("dragzone")) {
-                    event.target.classList.remove(`bg-${View.color}-100`);
+                    event.target.classList.remove(`bg-${View.color}-50/50`);
                 }
             }, false);
             document.addEventListener("dragend", function (event) {
                 if (event.target.classList.contains("dragzone")) {
-                    event.target.classList.remove(`bg-${View.color}-100`);
+                    event.target.classList.remove(`bg-${View.color}-50/50`);
                 }
             }, false);
         };
@@ -39,6 +39,7 @@ export default class Controller_Drag {
                 event.preventDefault();
                 dragEndX = event.screenX;
                 dragEndY = event.screenY;
+                innerRing.classList.remove(`bg-${View.color}-50/50`);
                 event.target.classList.remove(`bg-${View.color}-50/50`);
                 let posX = Math.abs(dragEndX - dragStartX);
                 let posY = Math.abs(dragEndY - dragStartY);
@@ -46,7 +47,7 @@ export default class Controller_Drag {
                 if (diam < 970) {
                     View.innerRings.addInnerRing(diam);
                     Model.addNewInnerRingToRingList(diam);
-                    Model.storage.saveAllStorage(Model.ringList, Model.selectedId);
+                    Model.storage.saveAllStorage(Model.ringList, Model.selectedId, View.color);
                 }
             });
         };
