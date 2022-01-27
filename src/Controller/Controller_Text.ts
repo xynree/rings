@@ -43,7 +43,7 @@ export default class Controller_Text {
 
         let newInput = document.createElement('input');
 
-          newInput.classList.add('ringtext', 'p-2', 'absolute', 'w-auto', 'min-w-36', 'h-8', 'focus:outline', 'focus:outline-slate-800','focus:bg-slate-50', 'bg-transparent', 'focus:ring-stone-900', 'hover:bg-slate-50');
+          newInput.classList.add('ringtext', 'p-2', 'absolute', 'w-auto', 'h-8', 'focus:outline', 'focus:outline-slate-800','focus:bg-slate-50', 'bg-transparent', 'focus:ring-stone-900', 'hover:bg-slate-50');
           newInput.style.left=`${e.clientX}px`;
           newInput.style.top=`${e.clientY}px`;
           newInput.setAttribute('draggable', 'true')
