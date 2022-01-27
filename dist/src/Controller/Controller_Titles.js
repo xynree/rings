@@ -1,4 +1,4 @@
-export default class Controller_DisplayedTitle {
+export default class Controller_Titles {
     constructor(Model, View) {
         this.attachDisplayedTitleListener = (loadRingListButtonTitles) => {
             let node = document.getElementById('textdisplaytitle');
@@ -22,4 +22,4 @@ export default class Controller_DisplayedTitle {
         };
     }
 }
-//# sourceMappingURL=Controller_DisplayedTitle.js.map
+//# sourceMappingURL=Controller_Titles.js.map

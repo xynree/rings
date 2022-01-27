@@ -1,6 +1,5 @@
-export default class Controller_DragListeners {
+export default class Controller_Drag {
     constructor(Model, View) {
-        this.findDiam = (posX, posY) => Math.sqrt(Math.pow(posX, 2) + Math.pow(posY, 2)) * 2;
         this.attachDragListener_Styles = function () {
             document.addEventListener("dragenter", function (event) {
                 if (event.target.classList.contains("dragzone")) {
@@ -33,7 +32,7 @@ export default class Controller_DragListeners {
             innerRing.addEventListener("dragstart", (event) => {
                 dragStartX = event.screenX;
                 dragStartY = event.screenY;
-                View.innerRings.removeInnerRingDragPreview(event, dragStartX, dragStartY);
+                View.innerRings.removeInnerRingDragPreview(event);
             });
             innerRing.addEventListener("dragend", (event) => {
                 event.preventDefault();
@@ -45,11 +44,12 @@ export default class Controller_DragListeners {
                 let diam = Math.round(this.findDiam(posX, posY));
                 if (diam < 970) {
                     View.innerRings.addInnerRing(diam);
-                    Model.addNewInnerRingToRingList(diam, Model.ringList);
+                    Model.addNewInnerRingToRingList(diam);
                     Model.storage.saveAllStorage(Model.ringList, Model.selectedId);
                 }
             });
         };
+        this.findDiam = (posX, posY) => Math.sqrt(Math.pow(posX, 2) + Math.pow(posY, 2)) * 2;
     }
 }
-//# sourceMappingURL=Controller_DragListeners.js.map
+//# sourceMappingURL=Controller_Drag.js.map
