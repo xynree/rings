@@ -6,7 +6,6 @@ import Controller_RingListButtons, { Controller_RingListButtonsType } from './Co
 import Controller_Titles, {Controller_TitlesType} from './Controller_Titles.js'
 import Controller_Text, { Controller_TextType } from './Controller_Text.js'
 
-
 export default class Controller  {
 
   Default: Controller_DefaultType;
@@ -34,6 +33,7 @@ export default class Controller  {
       this.Drag.attachDragListener_Styles();
       this.Drag.attachDragListener_NewInnerRing();
       this.attachClickListener_ClearStorage();
+      this.Text.attachDblClickListener();
 
       if (Model.storage.hasStoredRings()){
         Model.selectedId = Model.storage.loadSelectedIdFromStorage();
@@ -55,6 +55,9 @@ export default class Controller  {
       this.Titles.attachDisplayedTitleListener(this.RingListButtons.loadRingListButtonTitles);
       this.RingListButtons.loadRingListButtonTitles();
     }
+
+
+
 
     this.attachAddNewRingListener = function () {
       let newRing = document.getElementById("newring");
@@ -97,10 +100,6 @@ export default class Controller  {
       });
     };
 
- 
-
-
   }
-
 
 }

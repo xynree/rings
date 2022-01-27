@@ -2,18 +2,21 @@ import Controller_Default from './Controller_Default.js';
 import Controller_Drag from './Controller_Drag.js';
 import Controller_RingListButtons from './Controller_RingListButtons.js';
 import Controller_Titles from './Controller_Titles.js';
+import Controller_Text from './Controller_Text.js';
 export default class Controller {
     constructor(Model, View) {
         this.Default = new Controller_Default(View);
         this.Drag = new Controller_Drag(Model, View);
         this.RingListButtons = new Controller_RingListButtons(Model, View);
         this.Titles = new Controller_Titles(Model, View);
+        this.Text = new Controller_Text(Model, View);
         this.setup = function () {
             View.default.loadDefaultView();
             this.attachAddNewRingListener();
             this.Drag.attachDragListener_Styles();
             this.Drag.attachDragListener_NewInnerRing();
             this.attachClickListener_ClearStorage();
+            this.Text.attachDblClickListener();
             if (Model.storage.hasStoredRings()) {
                 Model.selectedId = Model.storage.loadSelectedIdFromStorage();
                 Model.ringList = Model.storage.loadRingListFromStorage();

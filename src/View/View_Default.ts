@@ -54,13 +54,13 @@ export default class View_Default implements View_DefaultType{
             +
           </div>
         </div>
+
         <div class="self-start pt-16 justify-self-end">
   
         </div>
       </div>
   
     </div>
-  
     </div>`
   
   this.loadDefaultView = () => {

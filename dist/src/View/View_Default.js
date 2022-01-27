@@ -46,13 +46,13 @@ export default class View_Default {
             +
           </div>
         </div>
+
         <div class="self-start pt-16 justify-self-end">
   
         </div>
       </div>
   
     </div>
-  
     </div>`;
         this.loadDefaultView = () => {
             document.querySelector("body").innerHTML = this.defaultView;
