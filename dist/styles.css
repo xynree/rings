@@ -480,9 +480,26 @@ Ensure the default browser behavior of the `hidden` attribute.
   src: url('./assets/UniversLTStd.otf');
 }
 
+@font-face {
+  font-family: 'hasklug';
+
+  src: url('./assets/h-med.otf');
+}
+
+@font-face {
+  font-family: 'hasklug-b';
+
+  src: url('./assets/h-bold.otf');
+}
+
 *{
-  font-family: 'univers';
-  background-color: rgb(245 245 244);
+  font-family: 'hasklug', 'univers', 'novamono';
+}
+
+body {
+  background-image: url("./assets/bg.jpg");
+  background-repeat: 'repeat';
+  background-size: 1600px 840px;
 }
 
 .oring {
@@ -516,11 +533,9 @@ Ensure the default browser behavior of the `hidden` attribute.
 }
 
 *::-webkit-scrollbar-track {
-  background: rgb(245 245 244);
 }
 
 *::-webkit-scrollbar-thumb {
-  background-color: rgb(245 245 244);
   border-radius: 2px;
   border: none;
 }

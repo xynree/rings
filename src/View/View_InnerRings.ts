@@ -26,7 +26,7 @@ export default class View_InnerRings implements View_InnerRingsType {
         "m-12",
         "flex",
         "justify-center",
-        "items-center"
+        "items-center",
       );
       newRing.id='innerring';
       newRing.style.width = `${value}px`;

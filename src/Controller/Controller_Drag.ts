@@ -24,7 +24,7 @@ export default class Controller_Drag implements Controller_DragType {
         "dragenter",
         function (event:any) {
           if (event.target.classList.contains("dragzone")) {
-            event.target.classList.add("bg-stone-100");
+            event.target.classList.add("bg-stone-200");
           }
         },
         false
@@ -34,7 +34,7 @@ export default class Controller_Drag implements Controller_DragType {
         "dragleave",
         function (event:any) {
           if (event.target.classList.contains("dragzone")) {
-            event.target.classList.remove("bg-stone-100");
+            event.target.classList.remove("bg-stone-200");
           }
         },
         false
@@ -44,7 +44,7 @@ export default class Controller_Drag implements Controller_DragType {
         "dragend",
         function (event:any) {
           if (event.target.classList.contains("dragzone")) {
-            event.target.classList.remove("bg-stone-100");
+            event.target.classList.remove("bg-stone-200");
           }
         },
         false
@@ -60,11 +60,11 @@ export default class Controller_Drag implements Controller_DragType {
 
 
       innerRing.addEventListener("mouseenter", (event:any) => {
-        event.target.classList.add("bg-stone-300");
+        event.target.classList.add("bg-stone-300/50");
       });
 
       innerRing.addEventListener("mouseout", (event:any) => {
-        event.target.classList.remove("bg-stone-300");
+        event.target.classList.remove("bg-stone-300/50");
       });
 
       innerRing.addEventListener("dragstart", (event:any) => {
@@ -75,11 +75,12 @@ export default class Controller_Drag implements Controller_DragType {
 
       innerRing.addEventListener("dragend", (event:any) => {
 
+        console.log('drag end run')
         event.preventDefault();
         dragEndX = event.screenX;
         dragEndY = event.screenY;
 
-        event.target.classList.remove("bg-stone-300");
+        event.target.classList.remove("bg-stone-300/50");
 
         let posX = Math.abs(dragEndX - dragStartX);
         let posY = Math.abs(dragEndY - dragStartY);

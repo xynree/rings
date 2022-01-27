@@ -18,7 +18,7 @@ export default class View implements ViewType {
   constructor() {
     this.innerRings = new View_InnerRings();
     this.ringTitleButtons = new View_RingTitleButtons();
-    this.default = new View_Default();
+    this.default = new View_Default('amber');
     this.styleBackground = (elem, color) => elem.style.background = color
   }
 
