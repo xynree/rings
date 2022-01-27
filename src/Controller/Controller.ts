@@ -4,6 +4,7 @@ import Controller_Default, { Controller_DefaultType }  from './Controller_Defaul
 import Controller_Drag, { Controller_DragType } from './Controller_Drag.js'
 import Controller_RingListButtons, { Controller_RingListButtonsType } from './Controller_RingListButtons.js'
 import Controller_Titles, {Controller_TitlesType} from './Controller_Titles.js'
+import Controller_Text, { Controller_TextType } from './Controller_Text.js'
 
 
 export default class Controller  {
@@ -12,6 +13,7 @@ export default class Controller  {
   Drag: Controller_DragType;
   RingListButtons: Controller_RingListButtonsType;
   Titles: Controller_TitlesType;
+  Text: Controller_TextType;
 
   setup: () => void;
   
@@ -24,6 +26,7 @@ export default class Controller  {
     this.Drag = new Controller_Drag(Model, View);
     this.RingListButtons= new Controller_RingListButtons(Model, View);
     this.Titles = new Controller_Titles(Model,View);
+    this.Text = new Controller_Text(Model, View);
 
     this.setup = function() {
       View.default.loadDefaultView();
