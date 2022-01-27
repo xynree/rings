@@ -44,7 +44,7 @@ export default class View_Default implements View_DefaultType{
       <div class="w-full h-full flex justify-center items-center gap-8">
         <div
           id="oring"
-          class="oring  ml-12 rounded-full dragzone border border-slate-700 flex justify-center items-center"
+          class="oring w-3/4 h-3/4 ml-12 rounded-full dragzone border border-slate-700 flex justify-center items-center "
         >
           <div
             draggable="true"

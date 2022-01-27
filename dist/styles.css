@@ -486,10 +486,10 @@ Ensure the default browser behavior of the `hidden` attribute.
 }
 
 .oring {
-  width: 850px;
-  height: 850px;
-  min-height: 680px;
-  min-width: 680px;
+  width: 700px;
+  height: 700px;
+  min-height: 600px;
+  min-width: 600px;
 }
 
 .iring {

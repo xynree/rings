@@ -28,6 +28,7 @@ export default class View_InnerRings implements View_InnerRingsType {
         "justify-center",
         "items-center"
       );
+      newRing.id='innerring';
       newRing.style.width = `${value}px`;
       newRing.style.height = `${value}px`;
       outerRing.appendChild(newRing);

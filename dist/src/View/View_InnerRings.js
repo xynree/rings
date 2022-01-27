@@ -5,6 +5,7 @@ export default class View_InnerRings {
             let newRing = document.createElement("div");
             newRing.innerText = "";
             newRing.classList.add("absolute", "rounded-full", "border", "border-stone-700", "bg-transparent", "m-12", "flex", "justify-center", "items-center");
+            newRing.id = 'innerring';
             newRing.style.width = `${value}px`;
             newRing.style.height = `${value}px`;
             outerRing.appendChild(newRing);
