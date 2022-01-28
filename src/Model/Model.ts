@@ -1,59 +1,45 @@
 import Model_Storage, {Model_StorageType} from './Model_Storage.js';
-import Model_ViewCommands from './Model_ViewCommands.js'
+import Model_ViewCommands, {Model_ViewCommandsType} from './Model_ViewCommands.js'
 
-import { ring } from '../Types/Types'
+import { ring, textNode } from '../Types/Types'
 import { ViewType } from '../View/View.js'
 
-
 export interface ModelType {
+  Storage: Model_StorageType;
+  ViewCommands: Model_ViewCommandsType;
+
+  textList: textNode[];
+  ringList: ring[];
   selectedId: number;
-  selectedTitle: string;
-  ringList:ring[];
-  storage: Model_StorageType;
-  viewCommands: any;
-  textList: any[];
+  selectedTextId: number;
+
   addNewInnerRingToRingList: (val: number) => void;
   addNewRingToRingListFromSelectedId: (val: number) => void;
   resetModelToDefault: () => void;
-  selectedTextId: number;
-
 }
 
 export default class Model implements ModelType {
-  selectedId: number;
-  selectedTitle: string;
-  ringList:ring[];
-  textList: any[];
-  storage: Model_StorageType;
-  viewCommands: any;
-  addNewInnerRingToRingList: (val: number) => void;
-  addNewRingToRingListFromSelectedId: (val: number) => void;
-  resetModelToDefault: () => void;
-  selectedTextId: number;
-
 
   constructor(View:ViewType) {
-    this.viewCommands = new Model_ViewCommands(View);
-    this.selectedId = 1;
+
+    this.ViewCommands = new Model_ViewCommands(View);
+    this.Storage = new Model_Storage();
+
     this.textList = [];
-    this.selectedTextId = this.textList.length > 0 ? this.textList[this.textList.length-1].textId: 1;
-    this.selectedTitle = "Ring Title";
-    this.ringList = [
-      { id: 1, title: "Ring Title", innerRings: [] },
-    ];
-    this.storage = new Model_Storage();
+    this.ringList = [ { id: 1, title: "Ring Title", innerRings: [] } ];
+
+    this.selectedId = 1;
+    this.selectedTextId = this.textList.length > 0 ? this.textList[this.textList.length-1].textId : 1;
 
     this.addNewInnerRingToRingList = (val:number ) => {
       this.ringList.forEach(({ id, innerRings }) => {
-        if (id === this.selectedId) {
-          innerRings.push(val)
-        }
+        id === this.selectedId ? innerRings.push(val) : ''
       })
     }
   
-    this.addNewRingToRingListFromSelectedId = (id:number, ) => {
+    this.addNewRingToRingListFromSelectedId = (id:number) => {
       this.ringList.push({
-        id: id,
+        id,
         title: "New Ring",
         innerRings: [],
       });
@@ -61,12 +47,23 @@ export default class Model implements ModelType {
   
     this.resetModelToDefault = () => {
       this.selectedId = 1;
-      this.selectedTitle = "Ring Title";
       this.ringList = [
         { id: 1, title: "Ring Title", innerRings: [] },
       ];
     }
   }
+
+  Storage: Model_StorageType;
+  ViewCommands: Model_ViewCommandsType;
+
+  textList: textNode[];
+  ringList: ring[];
+  selectedId: number;
+  selectedTextId: number;
+
+  addNewInnerRingToRingList: (val: number) => void;
+  addNewRingToRingListFromSelectedId: (val: number) => void;
+  resetModelToDefault: () => void;
 }
 
 

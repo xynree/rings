@@ -1,5 +1,9 @@
 export default class Controller_Text {
     constructor(Model, View) {
+        this.refreshNodes = () => {
+            this.removeOldNodes();
+            this.loadTextNodes();
+        };
         this.loadTextNodes = () => {
             if (!Model.textList || Model.textList.length < 1)
                 return;
@@ -20,6 +24,7 @@ export default class Controller_Text {
                 }
                 f.target.setAttribute('contenteditable', '');
                 f.target.classList.add('cursor-text');
+                f.target.focus();
             });
             elem.addEventListener('keydown', (d) => {
                 if (d.code === "Enter") {
@@ -27,7 +32,7 @@ export default class Controller_Text {
                     if (d.target.hasAttribute('id')) {
                         this.updateTextNode(d.target.textContent, Model.selectedId, Model.selectedTextId, null, null);
                         console.log('updatedTextNode', Model.textList, parseInt(d.target.id.slice(2)));
-                        Model.storage.saveText(Model.textList);
+                        Model.Storage.saveText(Model.textList);
                         elem.removeAttribute('contenteditable');
                         elem.classList.remove('cursor-text');
                         elem.blur();
@@ -42,24 +47,16 @@ export default class Controller_Text {
                     }
                 }
             });
-            elem.addEventListener('ondrop', (e) => {
-                console.log(e);
-            });
             elem.addEventListener('dragend', (e) => {
                 e.preventDefault();
                 let foundNode = this.findTextNode(parseInt(e.target.id.slice(0, 1)), parseInt(e.target.id.slice(2)));
                 this.updateTextNode(null, foundNode.ringId, foundNode.textId, e.clientX, e.clientY);
                 elem.style.left = `${e.clientX}px`;
                 elem.style.top = `${e.clientY}px`;
-                Model.storage.saveText(Model.textList);
+                Model.Storage.saveText(Model.textList);
             });
             return elem;
         };
-        /**
-         * @remarks
-         * attaches dblclick to the whole document -> create new node with specific e.xcreenX and e.xcreenY coordinates
-         * calls attachTextListener to make text editable.
-         */
         this.attachDblClickListener = () => {
             document.addEventListener('dblclick', (e) => {
                 if (e.target.id !== 'oring' && e.target.id !== 'innerring')
@@ -83,12 +80,13 @@ export default class Controller_Text {
         };
         this.addNewTextNodeToTextList = ({ ringId, textId, body, x, y }) => {
             Model.textList.push({ ringId, textId, body, x, y });
-            Model.storage.saveText(Model.textList);
+            Model.Storage.saveText(Model.textList);
         };
         this.createNewNode = (x, y, innerText = '') => {
             let newTextNode = document.createElement('span');
-            newTextNode.classList.add('ringtext', 'p-2', 'absolute', 'min-w-4', 'h-8', 'focus:outline', `focus:outline-${View.color}-800`, `focus:bg-${View.color}-50`, 'bg-transparent', 'cursor-grab', 'z-50', 'focus:ring-stone-900', `${View.Default.styles.hover}`, `${View.Default.styles.text2}`, 'text-sm');
+            newTextNode.classList.add('ringtext', 'p-2', 'absolute', 'min-w-4', 'h-8', 'focus:outline', `focus:outline-${View.color}-800`, `focus:bg-${View.color}-50`, 'bg-transparent', 'cursor-grab', 'z-50', 'focus:ring-stone-900', `${View.Default.styles.hover}`, `${View.Default.styles.text2}`);
             newTextNode.style.left = `${x}px`;
+            newTextNode.style.fontSize = '12px';
             newTextNode.style.top = `${y}px`;
             newTextNode.setAttribute('draggable', 'true');
             newTextNode.setAttribute('contenteditable', '');

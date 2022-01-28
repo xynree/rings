@@ -71,7 +71,7 @@ export default class Controller_Drag implements Controller_DragType {
         if (diam < 970) {
           View.InnerRings.addInnerRing(diam);
           Model.addNewInnerRingToRingList(diam)
-          Model.storage.saveAllStorage(Model.ringList, Model.selectedId, View.color)
+          Model.Storage.saveAllStorage(Model.ringList, Model.selectedId, View.color)
         }
       });
     };

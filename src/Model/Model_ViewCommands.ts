@@ -1,10 +1,11 @@
 import  { ring } from '../Types/Types'
 
-export default class Model_ViewCommands {
-
+export interface Model_ViewCommandsType {
   loadAllSelectedInnerRingsToDOM: (ringList:ring[], selectedId:number) => void;
   loadRingTitleButtonsToDOM: (ringList:ring[]) => void;
+}
 
+export default class Model_ViewCommands {
   constructor(View){
 
     this.loadAllSelectedInnerRingsToDOM = function (ringList, selectedId) {
@@ -27,5 +28,6 @@ export default class Model_ViewCommands {
       });
     };
   }
-
+  loadAllSelectedInnerRingsToDOM: (ringList:ring[], selectedId:number) => void;
+  loadRingTitleButtonsToDOM: (ringList:ring[]) => void;
 }

@@ -2,69 +2,57 @@ import {ModelType} from '../Model/Model.js'
 import { ViewType} from '../View/View.js'
 import { ring } from '../Types/Types.js'
 
-export interface Controller_RingListButtonsType{
+export interface Controller_RingListButtonsType {
   HIGHLIGHT: string;
 
-  attachRingTitleButtonListener: (elem:HTMLElement,id:number, e:any, loadDisplayedTitle:Function, removeOldNodes:Function, loadTextNodes:Function) => void;
-  attachAllRingTitleButtonListeners: (loadDisplayedTitle:Function,removeOldNodes:Function, loadTextNodes:Function) => void;
+  attachRingTitleButtonListener: (elem:HTMLElement, id:number) => void;
+  attachAllRingTitleButtonListeners: () => void;
   loadRingListButtonTitles:() => void;
   clearSelectedRingListButton:() => void;
   styleSelectedRingListButton:() => void;
   findNewRingTitleButton: (id:number) => Element;
-  attachDeleteListener: (btn:HTMLElement, loadDisplayedTitle:Function, removeOldNodes:Function, loadTextNodes:Function) => void;
-  attachAllDeleteListeners: (loadDisplayedTitle:Function,removeOldNodes:Function, loadTextNodes:Function) => void;
-
-
+  attachDeleteListener: (btn:HTMLElement) => void;
+  attachAllDeleteListeners: () => void;
+  attachAddNewRingListener: () => void;
 }
 
-export default class Controller_RingListButtons implements Controller_RingListButtonsType{
+export default class Controller_RingListButtons implements Controller_RingListButtonsType {
 
-  HIGHLIGHT: string;
-
-  attachRingTitleButtonListener: (elem:HTMLElement, id:number, e:any, loadDisplayedTitle:Function, removeOldNodes:Function, loadTextNodes:Function) => void;
-  attachAllRingTitleButtonListeners: (loadDisplayedTitle:Function,removeOldNodes:Function, loadTextNodes:Function) => void;
-  loadRingListButtonTitles:() => void;
-  clearSelectedRingListButton:() => void;
-  styleSelectedRingListButton:() => void;
-  findNewRingTitleButton: (id:number) => Element;
-  attachDeleteListener: (btn:HTMLElement, loadDisplayedTitle:Function, removeOldNodes:Function, loadTextNodes:Function) => void;
-  attachAllDeleteListeners: (loadDisplayedTitle:Function,removeOldNodes:Function, loadTextNodes:Function) => void;
-
-  constructor(Model:ModelType, View:ViewType){
+  constructor(Model:ModelType, View:ViewType, loadDisplayedTitle:Function, refreshNodes:Function){
 
     this.HIGHLIGHT = "white"
 
-    this.attachRingTitleButtonListener = (elem, id, loadDisplayedTitle, removeOldNodes, loadTextNodes) => {
+    this.attachRingTitleButtonListener = (elem, id) => {
       elem.addEventListener('click', (e:any) => {
         e.preventDefault();
         console.log('ring title listener clumped')
 
         Model.selectedId = id;
         View.InnerRings.clearInnerRings();
-        Model.viewCommands.loadAllSelectedInnerRingsToDOM(Model.ringList, Model.selectedId);
+        Model.ViewCommands.loadAllSelectedInnerRingsToDOM(Model.ringList, Model.selectedId);
         this.clearSelectedRingListButton();
         this.styleSelectedRingListButton();
-        Model.storage.saveAllStorage(Model.ringList, Model.selectedId, View.color);
+        Model.Storage.saveAllStorage(Model.ringList, Model.selectedId, View.color);
         this.loadRingListButtonTitles();
         Model.selectedTextId = 0;
+
         loadDisplayedTitle();
-        removeOldNodes();
-        loadTextNodes();
+        refreshNodes;
 
         
       })
 
     }
   
-      this.attachAllRingTitleButtonListeners = function (loadDisplayedTitle, removeOldNodes, loadTextNodes) {
+      this.attachAllRingTitleButtonListeners = function () {
         let ringListButtonGroup = document.querySelectorAll(".ringtitlebuttongroup");
         ringListButtonGroup.forEach((group) => {
-          this.attachRingTitleButtonListener(group.firstElementChild,parseInt(group.id.slice(7)), loadDisplayedTitle, removeOldNodes, loadTextNodes  )
-          this.attachDeleteListener(group.lastElementChild, Model.selectedId, loadDisplayedTitle)
+          this.attachRingTitleButtonListener(group.firstElementChild,parseInt(group.id.slice(7)))
+          this.attachDeleteListener(group.lastElementChild, Model.selectedId)
         })
       }
 
-      this.attachDeleteListener = (btn, loadDisplayedTitle, removeOldNodes, loadTextNodes) => {
+      this.attachDeleteListener = (btn) => {
 
         btn.addEventListener('click', (e:any) => {
           let id = parseInt(e.target.parentNode.id.slice(7));
@@ -74,33 +62,28 @@ export default class Controller_RingListButtons implements Controller_RingListBu
           if (Model.selectedId === id){
             Model.selectedId = 1;
             View.InnerRings.clearInnerRings();
-            Model.viewCommands.loadAllSelectedInnerRingsToDOM(Model.ringList, Model.selectedId);
+            Model.ViewCommands.loadAllSelectedInnerRingsToDOM(Model.ringList, Model.selectedId);
             loadDisplayedTitle();
           }
-          let filteredList = Model.ringList.filter((ring) => ring.id !== id)
-          let filteredTextList = Model.textList.filter(({ringId}) => ringId !== id);
-          Model.ringList = filteredList;
-          Model.textList = filteredTextList;
-          console.log(Model.ringList, filteredList)
-          Model.storage.saveAllStorage(Model.ringList, Model.selectedId, View.color);
-          removeOldNodes();
-          loadTextNodes();
+          Model.ringList = Model.ringList.filter((ring) => ring.id !== id)
+          Model.textList= Model.textList.filter(({ringId}) => ringId !== id);
+          Model.Storage.saveAllStorage(Model.ringList, Model.selectedId, View.color);
+          refreshNodes();
         })
       }
 
-      this.attachAllDeleteListeners = (loadDisplayedTitle, removeOldNodes, loadTextNodes) => {
+      this.attachAllDeleteListeners = () => {
 
         let delbtns = document.querySelectorAll('.ringlistdelete');
         delbtns.forEach((btn:HTMLElement) => {
-          this.attachDeleteListener(btn, loadDisplayedTitle, removeOldNodes, loadTextNodes);
+          this.attachDeleteListener(btn);
         })
       }
   
       this.loadRingListButtonTitles = () => {
         let ringListButtons = document.querySelectorAll("#ringlistbutton");
         ringListButtons.forEach((button:any) => {
-          let selectedTitle = Model.ringList.filter((ring:ring) => ring.id === parseInt(button.parentNode.id.slice(7)))[0].title
-          button.innerText = selectedTitle;
+          button.innerText = Model.ringList.filter((ring:ring) => ring.id === parseInt(button.parentNode.id.slice(7)))[0].title
         })
       }
   
@@ -135,12 +118,46 @@ export default class Controller_RingListButtons implements Controller_RingListBu
       }
   
       this.findNewRingTitleButton = (id) => document.getElementById(`ringid_${id}`);  
+      
+      this.attachAddNewRingListener = () => {
+        let newRing = document.getElementById("newring");
+        newRing.addEventListener("click", (e:any) => {
+          e.preventDefault();
+  
+          Model.selectedId = Model.ringList[Model.ringList.length-1].id +1;
+          Model.addNewRingToRingListFromSelectedId(Model.selectedId);
+  
+          View.InnerRings.clearInnerRings();
+          View.RingTitleButtons.addRingTitleButton(Model.selectedId);
+          
+          this.clearSelectedRingListButton();
+          this.styleSelectedRingListButton();
+
+          Model.Storage.saveAllStorage(Model.ringList, Model.selectedId, View.color);
+          this.loadRingListButtonTitles();
+  
+          loadDisplayedTitle();
+          refreshNodes();
+
+          // event listener for new ring title button
+          let newRingTitleButton = this.findNewRingTitleButton(Model.selectedId);
+          this.attachDeleteListener(<HTMLElement>newRingTitleButton.lastElementChild);
+          this.attachRingTitleButtonListener(<HTMLElement>newRingTitleButton, Model.selectedId)
+        }); 
+      }
 
   }
 
+  HIGHLIGHT: string;
 
-
-
-
+  attachRingTitleButtonListener: (elem:HTMLElement, id:number) => void;
+  attachAllRingTitleButtonListeners: () => void;
+  loadRingListButtonTitles:() => void;
+  clearSelectedRingListButton:() => void;
+  styleSelectedRingListButton:() => void;
+  findNewRingTitleButton: (id:number) => Element;
+  attachDeleteListener: (btn:HTMLElement) => void;
+  attachAllDeleteListeners: () => void;
+  attachAddNewRingListener: () => void;
 
 }

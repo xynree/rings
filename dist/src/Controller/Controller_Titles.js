@@ -9,7 +9,7 @@ export default class Controller_Titles {
                         if (ring.id === Model.selectedId) {
                             console.log(e.target.value);
                             ring.title = e.target.value;
-                            Model.storage.saveAllStorage(Model.ringList, Model.selectedId, View.color);
+                            Model.Storage.saveAllStorage(Model.ringList, Model.selectedId, View.color);
                         }
                     });
                     node.blur();
@@ -19,9 +19,7 @@ export default class Controller_Titles {
         };
         this.loadDisplayedTitle = () => {
             let index = Model.ringList.findIndex((ring) => ring.id === Model.selectedId);
-            if (~index) {
-                document.getElementById('textdisplaytitle').value = Model.ringList[index].title;
-            }
+            ~index ? document.getElementById('textdisplaytitle').value = Model.ringList[index].title : '';
         };
     }
 }
