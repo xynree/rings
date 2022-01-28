@@ -113,6 +113,8 @@ export default class Controller  {
         this.RingListButtons.loadRingListButtonTitles();
 
         this.Titles.loadDisplayedTitle();
+        this.Text.removeOldNodes();
+        this.Text.loadTextNodes();
 
         // event listener for new ring title button
         let newRingTitleButton = this.RingListButtons.findNewRingTitleButton(Model.selectedId);

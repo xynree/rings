@@ -72,6 +72,13 @@ export default class Controller_Text {
 
     
 
+    /**
+     * @remarks
+     * attaches dblclick to the whole document -> create new node with specific e.clientX and e.clientY coordinates
+     * calls attachTextListener to make text editable.
+     */
+    
+
     this.attachDblClickListener = () => {
       document.addEventListener('dblclick', (e:any) => {
 

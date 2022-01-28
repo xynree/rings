@@ -21,7 +21,7 @@ export default class Controller_Text {
                 if (d.code === "Enter") {
                     console.log('enter was pressed', d.target, d.target.hasAttribute('id'));
                     if (d.target.hasAttribute('id')) {
-                        this.updateTextNode(d.target.textContent, Model.selectedId, parseInt(d.target.id.slice(2)));
+                        this.updateTextNode(d.target.textContent, Model.selectedId, Model.selectedTextId);
                         console.log('updatedTextNode', Model.textList, parseInt(d.target.id.slice(2)));
                         Model.storage.saveText(Model.textList);
                         elem.blur();

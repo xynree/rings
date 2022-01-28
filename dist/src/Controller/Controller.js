@@ -80,6 +80,8 @@ export default class Controller {
                 Model.storage.saveAllStorage(Model.ringList, Model.selectedId, View.color);
                 this.RingListButtons.loadRingListButtonTitles();
                 this.Titles.loadDisplayedTitle();
+                this.Text.removeOldNodes();
+                this.Text.loadTextNodes();
                 // event listener for new ring title button
                 let newRingTitleButton = this.RingListButtons.findNewRingTitleButton(Model.selectedId);
                 this.RingListButtons.attachDeleteListener(newRingTitleButton.lastElementChild, this.Titles.loadDisplayedTitle, this.Text.removeOldNodes, this.Text.loadTextNodes);
