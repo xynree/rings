@@ -5,7 +5,7 @@ export default class Model {
         this.viewCommands = new Model_ViewCommands(View);
         this.selectedId = 1;
         this.textList = [];
-        this.selectedTextId = this.textList.length > 0 ? this.textList[this.textList.length - 1].textId : 0;
+        this.selectedTextId = this.textList.length > 0 ? this.textList[this.textList.length - 1].textId : 1;
         this.selectedTitle = "Ring Title";
         this.ringList = [
             { id: 1, title: "Ring Title", innerRings: [] },

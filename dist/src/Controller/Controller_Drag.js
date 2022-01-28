@@ -1,21 +1,10 @@
 export default class Controller_Drag {
     constructor(Model, View) {
         this.attachDragListener_Styles = function () {
-            document.addEventListener("dragenter", function (event) {
-                if (event.target.classList.contains("dragzone")) {
-                    event.target.classList.add(`bg-${View.color}-50/50`);
-                }
-            }, false);
-            document.addEventListener("dragleave", function (event) {
-                if (event.target.classList.contains("dragzone")) {
-                    event.target.classList.remove(`bg-${View.color}-50/50`);
-                }
-            }, false);
-            document.addEventListener("dragend", function (event) {
-                if (event.target.classList.contains("dragzone")) {
-                    event.target.classList.remove(`bg-${View.color}-50/50`);
-                }
-            }, false);
+            document.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                e.dataTransfer.dropEffect = "move";
+            });
         };
         this.attachDragListener_NewInnerRing = function () {
             let dragStartX;

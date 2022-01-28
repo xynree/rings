@@ -42,11 +42,11 @@ export default class View_InnerRings implements View_InnerRingsType {
     };
   
     this.removeInnerRingDragPreview = (e) => {
-      let dragShadow = e.target.cloneNode(true);
-      dragShadow.style.display = "none";
-      document.body.appendChild(dragShadow);
-      e.dataTransfer.setDragImage(dragShadow, 0, 0);
-      e.target.classList.add(`bg-${color}-200`);
+      // let dragShadow = e.target.cloneNode(true);
+      // dragShadow.style.visibility = "hidden";
+      // document.body.appendChild(dragShadow);
+      // e.dataTransfer.setDragImage(dragShadow, 0, 0);
+      // e.target.classList.add(`bg-${color}-200`);
     }
 
   }

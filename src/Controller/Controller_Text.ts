@@ -7,8 +7,10 @@ export interface Controller_TextType {
   addNewTextNodeToTextList: (textNode:textNode) => void;
   removeOldNodes: () => void;
   createNewNode: (x:number, y:number, innerText:string) => HTMLElement;
-  updateTextNode: (text:string, ringId:number, textId:number) => void;
+  updateTextNode: (text:string, ringId:number, textId:number, x:number, y:number) => void;
   attachTextListener: (elem:HTMLElement, x:number, y:number) => HTMLElement;
+  findTextNode: (ringId:number, textId:number) => textNode
+
 
 
 }
@@ -22,8 +24,9 @@ export default class Controller_Text {
   removeOldNodes: () => void;
   createNewNode: (x:number, y:number, innerText:string) => HTMLElement;
   loadTextNodes: () => void;
-  updateTextNode: (text:string, ringId:number, textId:number) => void;
+  updateTextNode: (text:string, ringId:number, textId:number, x:number, y:number) => void;
   attachTextListener: (elem:HTMLElement, x:number, y:number) => HTMLElement;
+  findTextNode: (ringId:number, textId:number) => textNode
 
 
   constructor(Model:ModelType, View:ViewType){
@@ -31,10 +34,12 @@ export default class Controller_Text {
     this.loadTextNodes = () => {
       if (!Model.textList ||Model.textList.length < 1) return;
       let loadList = Model.textList.filter((textNode) => textNode.ringId === Model.selectedId)
-      loadList.forEach(({body, x, y}) => {
-        let newNode = this.createNewNode(x,y, body);
-        newNode.id = `${Model.selectedId}_${Model.selectedTextId}`;
-        this.attachTextListener(newNode, x, y);
+      loadList.forEach((node) => {
+        let newNode = this.createNewNode(node.x,node.y, node.body);
+        newNode.id = `${node.ringId}_${node.textId}`;
+        newNode.removeAttribute('contenteditable');
+        newNode.classList.remove('cursor-text');
+        this.attachTextListener(newNode, node.x, node.y);
         newNode.blur();
       })
     }
@@ -46,6 +51,8 @@ export default class Controller_Text {
           Model.selectedTextId = parseInt(f.target.id.slice(2))
         }
         f.target.setAttribute('contenteditable','');
+        f.target.classList.add('cursor-text');
+        f.target.focus();
       })
 
       elem.addEventListener('keydown', (d:any) => {
@@ -53,10 +60,12 @@ export default class Controller_Text {
           console.log('enter was pressed', d.target, d.target.hasAttribute('id'))
           if (d.target.hasAttribute('id')){
 
-            this.updateTextNode(d.target.textContent, Model.selectedId, Model.selectedTextId);
+            this.updateTextNode(d.target.textContent, Model.selectedId, Model.selectedTextId, null, null);
             console.log('updatedTextNode', Model.textList, parseInt(d.target.id.slice(2)))
             Model.storage.saveText(Model.textList);
             elem.removeAttribute('contenteditable');
+            elem.classList.remove('cursor-text');
+
             elem.blur();
 
           } else {
@@ -64,33 +73,37 @@ export default class Controller_Text {
             elem.id = `${Model.selectedId}_${Model.selectedTextId}`
             this.addNewTextNodeToTextList({ringId:Model.selectedId, textId:Model.selectedTextId, body:d.target.textContent, x, y})
             elem.removeAttribute('contenteditable');
-
+            elem.classList.remove('cursor-text');
             elem.blur();
-
-
-            console.log(Model.textList)
           }
         }
       })
 
-       elem.addEventListener('dragstart', (e)=> {
-         console.log(e)
-       })
 
-       elem.addEventListener('dragend', (e) => {
-         console.log(e)
-       })
-      
+
+
+      elem.addEventListener('dragend', (e:any) => {
+        e.preventDefault();
+
+        let foundNode = this.findTextNode(parseInt(e.target.id.slice(0,1)),parseInt(e.target.id.slice(2)));
+        this.updateTextNode(null, foundNode.ringId, foundNode.textId, e.clientX, e.clientY);
+
+        elem.style.left=`${e.clientX}px`;
+        elem.style.top=`${e.clientY}px`;
+        Model.storage.saveText(Model.textList);
+        
+      })
+
+
 
 
       return elem;
     }
 
     
-
     /**
      * @remarks
-     * attaches dblclick to the whole document -> create new node with specific e.clientX and e.clientY coordinates
+     * attaches dblclick to the whole document -> create new node with specific e.xcreenX and e.xcreenY coordinates
      * calls attachTextListener to make text editable.
      */
     
@@ -123,15 +136,20 @@ export default class Controller_Text {
 
     this.createNewNode = (x,y, innerText='') => {
       let newTextNode = document.createElement('span');
-      newTextNode.classList.add('ringtext', 'p-2', 'absolute', 'min-w-4', 'h-8', 'focus:outline', `focus:outline-${View.color}-800`,`focus:bg-${View.color}-50`, 'bg-transparent', 'focus:ring-stone-900', `${View.Default.styles.hover}`, `${View.Default.styles.text2}`,'text-base');
+      newTextNode.classList.add('ringtext', 'p-2', 'absolute', 'min-w-4', 'h-8', 'focus:outline', `focus:outline-${View.color}-800`,`focus:bg-${View.color}-50`, 'bg-transparent','cursor-grab', 'z-50', 'focus:ring-stone-900', `${View.Default.styles.hover}`, `${View.Default.styles.text2}`,'text-sm');
       newTextNode.style.left=`${x}px`;
       newTextNode.style.top=`${y}px`;
       newTextNode.setAttribute('draggable', 'true')
       newTextNode.setAttribute('contenteditable', '');
+      newTextNode.classList.add('cursor-text');
       newTextNode.innerText = innerText;
       document.body.appendChild(newTextNode);
       newTextNode.focus();
       return newTextNode;
+    }
+
+    this.findTextNode = (ringId, textId) => {
+      return Model.textList.find((ring) => ring.ringId === ringId && ring.textId === textId)
     }
 
     this.removeOldNodes = () =>{

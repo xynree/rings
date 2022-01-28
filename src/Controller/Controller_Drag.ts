@@ -18,35 +18,15 @@ export default class Controller_Drag implements Controller_DragType {
   constructor(Model:ModelType, View:ViewType){
 
     this.attachDragListener_Styles = function () {
-      document.addEventListener(
-        "dragenter",
-        function (event:any) {
-          if (event.target.classList.contains("dragzone")) {
-            event.target.classList.add(`bg-${View.color}-50/50`);
-          }
-        },
-        false
-      );
 
-      document.addEventListener(
-        "dragleave",
-        function (event:any) {
-          if (event.target.classList.contains("dragzone")) {
-            event.target.classList.remove(`bg-${View.color}-50/50`);
-          }
-        },
-        false
-      );
+      document.addEventListener('dragover', (e:any) => {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = "move"
+      })
 
-      document.addEventListener(
-        "dragend",
-        function (event:any) {
-          if (event.target.classList.contains("dragzone")) {
-            event.target.classList.remove(`bg-${View.color}-50/50`);
-          }
-        },
-        false
-      );
+
+
+
     };
 
     this.attachDragListener_NewInnerRing = function () {

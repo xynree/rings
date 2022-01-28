@@ -12,9 +12,9 @@ export default class View_Default {
             bg: `bg-${color}-800`
         };
         this.defaultView = `<div class="flex  h-screen p-12 justify-center items-center">
-  <div class=':w-[600px] flex-shrink-0 flex justify-end'>
+  <div class='w-[600px] flex-shrink-0 flex justify-end'>
     <div class="w-1/2 mr-12  flex flex-col justify-center flex-shrink-0">
-        <input type='text' class="text-4xl  text-center p-3 w-5/6 bg-transparent ${this.styles.caret} ${this.styles.selection}  mb-4 focus:outline-none ${this.styles.focus} ${this.styles.text1}" id='textdisplaytitle'  required value='My Ring Title'/>
+        <input type='text' class="text-4xl  text-left p-1 w-full bg-transparent ${this.styles.caret} ${this.styles.selection}  mb-4 focus:outline-none ${this.styles.focus} ${this.styles.text1}" id='textdisplaytitle'  required value='My Ring Title'/>
         <div id='newRingGroup' class='overflow-scroll h-64 scroll-smooth flex-shrink-0'>
           <div id="ringid_1" class='ringtitlebuttongroup z-0 flex w-5/6 h-10 m-2 items-center justify-between'>
             <button
