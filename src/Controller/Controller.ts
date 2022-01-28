@@ -53,21 +53,24 @@ export default class Controller  {
       if (Model.storage.hasStoredRings()){
         Model.selectedId = Model.storage.loadSelectedIdFromStorage();
         Model.ringList = Model.storage.loadRingListFromStorage();
-        Model.textList = Model.storage.loadText();
+        if (Model.storage.loadText()!== null) {
+          Model.textList = Model.storage.loadText();
+        }
         this.Text.removeOldNodes();
         this.Text.loadTextNodes();
 
         View.RingTitleButtons.clearRingTitleButtons();
         Model.viewCommands.loadRingTitleButtonsToDOM(Model.ringList);
         Model.viewCommands.loadAllSelectedInnerRingsToDOM(Model.ringList, Model.selectedId);
-        this.RingListButtons.attachAllRingTitleButtonListeners(this.Titles.loadDisplayedTitle);
+        this.RingListButtons.attachAllRingTitleButtonListeners(this.Titles.loadDisplayedTitle, this.Text.removeOldNodes, this.Text.loadTextNodes);
+
         this.RingListButtons.clearSelectedRingListButton(Model.selectedId);
         this.RingListButtons.styleSelectedRingListButton();
-        this.RingListButtons.attachAllDeleteListeners(this.Titles.loadDisplayedTitle);
+        this.RingListButtons.attachAllDeleteListeners(this.Titles.loadDisplayedTitle, this.Text.removeOldNodes, this.Text.loadTextNodes);
 
 
       } else{
-        this.Default.loadDefaults(this.RingListButtons.attachRingTitleButtonListener, this.Titles.loadDisplayedTitle);
+        this.Default.loadDefaults(this.RingListButtons.attachRingTitleButtonListener, this.Titles.loadDisplayedTitle, this.Text.removeOldNodes, this.Text.loadTextNodes);
         Model.storage.saveAllStorage(Model.ringList, Model.selectedId, View.color);
       }
       this.Titles.loadDisplayedTitle();
@@ -113,9 +116,9 @@ export default class Controller  {
 
         // event listener for new ring title button
         let newRingTitleButton = this.RingListButtons.findNewRingTitleButton(Model.selectedId);
-        this.RingListButtons.attachDeleteListener(newRingTitleButton.lastElementChild, this.Titles.loadDisplayedTitle);
+        this.RingListButtons.attachDeleteListener(newRingTitleButton.lastElementChild, this.Titles.loadDisplayedTitle, this.Text.removeOldNodes, this.Text.loadTextNodes);
 
-        this.RingListButtons.attachRingTitleButtonListener(newRingTitleButton, Model.selectedId, this.Titles.loadDisplayedTitle)
+        this.RingListButtons.attachRingTitleButtonListener(newRingTitleButton, Model.selectedId, this.Titles.loadDisplayedTitle, this.Text.removeOldNodes, this.Text.loadTextNodes)
       }); 
     }
 

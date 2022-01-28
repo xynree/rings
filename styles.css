@@ -35,12 +35,12 @@ body {
 }
 
 
-.oring {
+#oring {
 
   width: 700px;
   height: 700px;
-  min-height: 600px;
-  min-width: 600px;
+  min-height: 550px;
+  min-width: 550px;
 
 }
 
@@ -52,11 +52,6 @@ body {
 }
 
 
-#oring {
-
-  width: 48rem;
-  height: 48rem;
-}
 
 /* Works on Firefox */
 * {

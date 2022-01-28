@@ -7,6 +7,10 @@ export interface Controller_TextType {
   addNewTextNodeToTextList: (textNode:textNode) => void;
   removeOldNodes: () => void;
   createNewNode: (x:number, y:number, innerText:string) => HTMLElement;
+  updateTextNode: (text:string, ringId:number, textId:number) => void;
+  attachTextListener: (elem:HTMLElement, x:number, y:number) => HTMLElement;
+
+
 }
 
 type textNode = {ringId:number, textId:number, body:string, x:number, y:number}
@@ -18,6 +22,8 @@ export default class Controller_Text {
   removeOldNodes: () => void;
   createNewNode: (x:number, y:number, innerText:string) => HTMLElement;
   loadTextNodes: () => void;
+  updateTextNode: (text:string, ringId:number, textId:number) => void;
+  attachTextListener: (elem:HTMLElement, x:number, y:number) => HTMLElement;
 
 
   constructor(Model:ModelType, View:ViewType){
@@ -26,10 +32,45 @@ export default class Controller_Text {
       if (!Model.textList ||Model.textList.length < 1) return;
       let loadList = Model.textList.filter((textNode) => textNode.ringId === Model.selectedId)
       loadList.forEach(({body, x, y}) => {
-        this.createNewNode(x,y, body);
+        let newNode = this.createNewNode(x,y, body);
+        newNode.id = `${Model.selectedId}_${Model.selectedTextId}`;
+        this.attachTextListener(newNode, x, y);
+        newNode.blur();
       })
     }
 
+    this.attachTextListener = (elem, x:null, y:null) => {
+      elem.addEventListener('click', (f:any) => {
+        if(f.target.hasAttribute('id')){
+          Model.selectedTextId = parseInt(f.target.id.slice(2))
+        }
+      })
+
+      elem.addEventListener('keydown', (d:any) => {
+        if (d.code === "Enter") {
+          console.log('enter was pressed', d.target, d.target.hasAttribute('id'))
+          if (d.target.hasAttribute('id')){
+
+            this.updateTextNode(d.target.textContent, Model.selectedId, Model.selectedTextId);
+            console.log('updatedTextNode', Model.textList, parseInt(d.target.id.slice(2)))
+            Model.storage.saveText(Model.textList);
+            elem.blur();
+
+          } else {
+            Model.selectedTextId = Model.textList.length > 0? Model.textList[Model.textList.length-1].textId+1:1;
+            elem.id = `${Model.selectedId}_${Model.selectedTextId}`
+            this.addNewTextNodeToTextList({ringId:Model.selectedId, textId:Model.selectedTextId, body:d.target.textContent, x, y})
+            elem.blur();
+
+            console.log(Model.textList)
+          }
+
+        }
+      })
+      return elem;
+    }
+
+    
 
     this.attachDblClickListener = () => {
       document.addEventListener('dblclick', (e:any) => {
@@ -39,16 +80,15 @@ export default class Controller_Text {
         this.removeOldNodes();
 
         let newTextNode = this.createNewNode(e.clientX, e.clientY, '');
-  
-        newTextNode.addEventListener('keydown', (d:any) => {
-          if (d.code === "Enter") {  
-          Model.selectedTextId++;
-          newTextNode.id = `${Model.selectedId}_${Model.selectedTextId}`
-          this.addNewTextNodeToTextList({ringId:Model.selectedId, textId:Model.selectedTextId, body:d.target.textContent, x:e.clientX, y:e.clientY  })
-          newTextNode.blur();
-          }
-        })
+        this.attachTextListener(newTextNode, e.clientX, e.clientY);
       })
+    }
+
+    this.updateTextNode = (text, ringId, textId) => {
+      Model.textList.forEach((node) => {
+        if(node.ringId === ringId && node.textId === textId){
+          node.body = text;
+        }});
     }
 
     this.addNewTextNodeToTextList= ({ringId, textId, body, x, y}) => {
@@ -74,6 +114,7 @@ export default class Controller_Text {
 
       if (!oldNodes) return;
         oldNodes.forEach((node) => {
+          console.log((node.id.slice(0,1)))
           if(!node.id || parseInt(node.id.slice(0,1)) !== Model.selectedId ){
             node.remove();
           }

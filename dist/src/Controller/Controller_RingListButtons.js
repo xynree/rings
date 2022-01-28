@@ -1,7 +1,7 @@
 export default class Controller_RingListButtons {
     constructor(Model, View) {
         this.HIGHLIGHT = "white";
-        this.attachRingTitleButtonListener = (elem, id, loadDisplayedTitle) => {
+        this.attachRingTitleButtonListener = (elem, id, loadDisplayedTitle, removeOldNodes, loadTextNodes) => {
             elem.addEventListener('click', (e) => {
                 e.preventDefault();
                 console.log('ring title listener clumped');
@@ -12,17 +12,20 @@ export default class Controller_RingListButtons {
                 this.styleSelectedRingListButton();
                 Model.storage.saveAllStorage(Model.ringList, Model.selectedId, View.color);
                 this.loadRingListButtonTitles();
+                Model.selectedTextId = 0;
                 loadDisplayedTitle();
+                removeOldNodes();
+                loadTextNodes();
             });
         };
-        this.attachAllRingTitleButtonListeners = function (loadDisplayedTitle) {
+        this.attachAllRingTitleButtonListeners = function (loadDisplayedTitle, removeOldNodes, loadTextNodes) {
             let ringListButtonGroup = document.querySelectorAll(".ringtitlebuttongroup");
             ringListButtonGroup.forEach((group) => {
-                this.attachRingTitleButtonListener(group.firstElementChild, parseInt(group.id.slice(7)), loadDisplayedTitle);
+                this.attachRingTitleButtonListener(group.firstElementChild, parseInt(group.id.slice(7)), loadDisplayedTitle, removeOldNodes, loadTextNodes);
                 this.attachDeleteListener(group.lastElementChild, Model.selectedId, loadDisplayedTitle);
             });
         };
-        this.attachDeleteListener = (btn, loadDisplayedTitle) => {
+        this.attachDeleteListener = (btn, loadDisplayedTitle, removeOldNodes, loadTextNodes) => {
             btn.addEventListener('click', (e) => {
                 let id = parseInt(e.target.parentNode.id.slice(7));
                 console.log('delete listener clumped');
@@ -34,15 +37,19 @@ export default class Controller_RingListButtons {
                     loadDisplayedTitle();
                 }
                 let filteredList = Model.ringList.filter((ring) => ring.id !== id);
+                let filteredTextList = Model.textList.filter(({ ringId }) => ringId !== id);
                 Model.ringList = filteredList;
+                Model.textList = filteredTextList;
                 console.log(Model.ringList, filteredList);
                 Model.storage.saveAllStorage(Model.ringList, Model.selectedId, View.color);
+                removeOldNodes();
+                loadTextNodes();
             });
         };
-        this.attachAllDeleteListeners = (loadDisplayedTitle) => {
+        this.attachAllDeleteListeners = (loadDisplayedTitle, removeOldNodes, loadTextNodes) => {
             let delbtns = document.querySelectorAll('.ringlistdelete');
             delbtns.forEach((btn) => {
-                this.attachDeleteListener(btn, loadDisplayedTitle);
+                this.attachDeleteListener(btn, loadDisplayedTitle, removeOldNodes, loadTextNodes);
             });
         };
         this.loadRingListButtonTitles = () => {

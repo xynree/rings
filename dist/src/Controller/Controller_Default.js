@@ -1,13 +1,13 @@
 export default class Controller_Default {
     constructor(View) {
-        this.loadDefaults = (attachRingTitleButtonListener, loadDisplayedTitle) => {
+        this.loadDefaults = (attachRingTitleButtonListener, loadDisplayedTitle, removeOldNodes, loadTextNodes) => {
             this.styleDefaultRingButton();
-            this.loadDefaultRingTitleButtonListener(attachRingTitleButtonListener, loadDisplayedTitle);
+            this.loadDefaultRingTitleButtonListener(attachRingTitleButtonListener, loadDisplayedTitle, removeOldNodes, loadTextNodes);
         };
-        this.loadDefaultRingTitleButtonListener = (attachRingTitleButtonListener, loadDisplayedTitle) => {
+        this.loadDefaultRingTitleButtonListener = (attachRingTitleButtonListener, loadDisplayedTitle, removeOldNodes, loadTextNodes) => {
             let ringListButton = document.querySelector('#ringlistbutton');
             let id = parseInt(ringListButton.parentNode.id.slice(7));
-            attachRingTitleButtonListener(ringListButton, id, loadDisplayedTitle);
+            attachRingTitleButtonListener(ringListButton, id, loadDisplayedTitle, removeOldNodes, loadTextNodes);
         };
         this.styleDefaultRingButton = () => {
             let ringListButton = document.querySelector('#ringlistbutton');
