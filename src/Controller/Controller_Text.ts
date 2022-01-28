@@ -40,10 +40,12 @@ export default class Controller_Text {
     }
 
     this.attachTextListener = (elem, x:null, y:null) => {
-      elem.addEventListener('click', (f:any) => {
+
+      elem.addEventListener('dblclick', (f:any) => {
         if(f.target.hasAttribute('id')){
           Model.selectedTextId = parseInt(f.target.id.slice(2))
         }
+        f.target.setAttribute('contenteditable','');
       })
 
       elem.addEventListener('keydown', (d:any) => {
@@ -54,19 +56,33 @@ export default class Controller_Text {
             this.updateTextNode(d.target.textContent, Model.selectedId, Model.selectedTextId);
             console.log('updatedTextNode', Model.textList, parseInt(d.target.id.slice(2)))
             Model.storage.saveText(Model.textList);
+            elem.removeAttribute('contenteditable');
             elem.blur();
 
           } else {
             Model.selectedTextId = Model.textList.length > 0? Model.textList[Model.textList.length-1].textId+1:1;
             elem.id = `${Model.selectedId}_${Model.selectedTextId}`
             this.addNewTextNodeToTextList({ringId:Model.selectedId, textId:Model.selectedTextId, body:d.target.textContent, x, y})
+            elem.removeAttribute('contenteditable');
+
             elem.blur();
+
 
             console.log(Model.textList)
           }
-
         }
       })
+
+       elem.addEventListener('dragstart', (e)=> {
+         console.log(e)
+       })
+
+       elem.addEventListener('dragend', (e) => {
+         console.log(e)
+       })
+      
+
+
       return elem;
     }
 
@@ -91,10 +107,12 @@ export default class Controller_Text {
       })
     }
 
-    this.updateTextNode = (text, ringId, textId) => {
+    this.updateTextNode = (text=null, ringId, textId, x=null, y=null) => {
       Model.textList.forEach((node) => {
         if(node.ringId === ringId && node.textId === textId){
-          node.body = text;
+          if (text) node.body = text;
+          if (x) node.x = x;
+          if (y) node.y = y;
         }});
     }
 
@@ -126,8 +144,6 @@ export default class Controller_Text {
             node.remove();
           }
         })
-
-
 
     }
   }
