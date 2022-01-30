@@ -12,7 +12,7 @@ export default class View_InnerRings {
         };
         this.clearInnerRings = function () {
             let outerRing = document.querySelector("#oring");
-            while (outerRing.lastElementChild && outerRing.lastElementChild.id !== "iring") {
+            while (outerRing.lastElementChild && outerRing.lastElementChild.id !== "center_ring") {
                 outerRing.removeChild(outerRing.lastElementChild);
             }
         };

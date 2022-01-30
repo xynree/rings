@@ -8,7 +8,6 @@ export default class View {
         this.RingTitleButtons = new View_RingTitleButtons();
         this.colorList = ['slate', 'stone', 'red', 'orange', 'amber', 'lime', 'emerald', 'teal', 'sky', 'indigo', 'purple', 'fuchsia', 'rose'];
         this.color = 'amber';
-        this.styleBackground = (elem, color) => elem.style.background = color;
     }
 }
 //# sourceMappingURL=View.js.map

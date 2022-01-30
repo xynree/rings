@@ -15,7 +15,6 @@ export default class View_RingTitleButtons {
             }
         };
         this.clearButton = (elem) => {
-            console.log(elem);
             elem.innerHTML = '';
             elem.remove();
         };

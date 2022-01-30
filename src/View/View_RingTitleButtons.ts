@@ -1,9 +1,4 @@
-export interface View_RingTitleButtonsType {
-  addRingTitleButton: (id:number) => void;
-  clearRingTitleButtons: () => void;
-  clearButton: (elem:HTMLElement) => void;
-
-}
+import { View_RingTitleButtonsType } from "../Types/Types.js";
 
 export default class View_RingTitleButtons implements View_RingTitleButtonsType {
   
@@ -30,14 +25,9 @@ export default class View_RingTitleButtons implements View_RingTitleButtonsType 
   }
 
   this.clearButton = (elem) => {
-    console.log(elem)
-
     elem.innerHTML='';
     elem.remove();
-
-
   }
-
 
   }
 }

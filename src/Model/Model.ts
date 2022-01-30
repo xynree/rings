@@ -1,10 +1,10 @@
-import Model_Storage, {Model_StorageType} from './Model_Storage.js';
-import Model_ViewCommands, {Model_ViewCommandsType} from './Model_ViewCommands.js'
+import Model_Storage from './Model_Storage.js';
+import Model_ViewCommands from './Model_ViewCommands.js'
+import { ring, textNode, ModelType, Model_ViewCommandsType, ViewType, Model_StorageType} from '../Types/Types'
 
-import { ring, textNode } from '../Types/Types'
-import { ViewType } from '../View/View.js'
 
-export interface ModelType {
+export default class Model implements ModelType {
+
   Storage: Model_StorageType;
   ViewCommands: Model_ViewCommandsType;
 
@@ -16,9 +16,6 @@ export interface ModelType {
   addNewInnerRingToRingList: (val: number) => void;
   addNewRingToRingListFromSelectedId: (val: number) => void;
   resetModelToDefault: () => void;
-}
-
-export default class Model implements ModelType {
 
   constructor(View:ViewType) {
 
@@ -53,17 +50,8 @@ export default class Model implements ModelType {
     }
   }
 
-  Storage: Model_StorageType;
-  ViewCommands: Model_ViewCommandsType;
 
-  textList: textNode[];
-  ringList: ring[];
-  selectedId: number;
-  selectedTextId: number;
 
-  addNewInnerRingToRingList: (val: number) => void;
-  addNewRingToRingListFromSelectedId: (val: number) => void;
-  resetModelToDefault: () => void;
 }
 
 

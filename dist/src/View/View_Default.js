@@ -1,5 +1,6 @@
 export default class View_Default {
     constructor(color) {
+        this.loadDefaultView = () => document.querySelector("body").innerHTML = this.defaultView;
         this.styles = {
             text1: `text-${color}-900`,
             text2: `text-${color}-600`,
@@ -48,6 +49,9 @@ export default class View_Default {
       <button class='${this.styles.text2} text-3xl'>
       ?
       </button>
+      <button id='deletetext' class='${this.styles.text2}  ml-3 text-4xl w-10 h-10'>
+      X
+      </button>
       </div>
     </div>
     </div>
@@ -59,7 +63,7 @@ export default class View_Default {
         >
           <div
             draggable="true"
-            id="iring"
+            id="center_ring"
             class="iring z-50 w-9 h-9 rounded-full border ${this.styles.border} ${this.styles.text1} flex text-center items-center justify-center cursor-grab"
           >
             +
@@ -69,9 +73,6 @@ export default class View_Default {
   
     </div>
     </div>`;
-        this.loadDefaultView = () => {
-            document.querySelector("body").innerHTML = this.defaultView;
-        };
     }
 }
 //# sourceMappingURL=View_Default.js.map

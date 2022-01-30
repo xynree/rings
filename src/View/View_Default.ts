@@ -1,15 +1,12 @@
-export interface View_DefaultType {
-  defaultView: string;
-  loadDefaultView: () => void;
-  styles: {text1: string, text2:string, border: string, highlight: string, hover: string, focus: string, selection: string, caret: string, bg:string};
-
-}
+import { View_DefaultType } from '../Types/Types.js'
 
 export default class View_Default implements View_DefaultType{ 
   defaultView: string;
-  loadDefaultView: () => void;
   styles: {text1: string, text2:string, border: string, highlight: string, hover: string, focus: string, selection: string, caret: string, bg:string};
 
+
+  loadDefaultView = () => document.querySelector("body").innerHTML = this.defaultView;
+  
   constructor(color:string){
 
   this.styles = {
@@ -21,7 +18,8 @@ export default class View_Default implements View_DefaultType{
     focus: `focus:ring-${color}-900`, 
     selection: `selection:bg-${color}-200`, 
     caret: `caret-${color}-800`,
-    bg: `bg-${color}-800` }
+    bg: `bg-${color}-800` 
+  }
 
   
   this.defaultView = `<div class="flex  h-screen p-12 justify-center items-center">
@@ -61,6 +59,9 @@ export default class View_Default implements View_DefaultType{
       <button class='${this.styles.text2} text-3xl'>
       ?
       </button>
+      <button id='deletetext' class='${this.styles.text2}  ml-3 text-4xl w-10 h-10'>
+      X
+      </button>
       </div>
     </div>
     </div>
@@ -72,7 +73,7 @@ export default class View_Default implements View_DefaultType{
         >
           <div
             draggable="true"
-            id="iring"
+            id="center_ring"
             class="iring z-50 w-9 h-9 rounded-full border ${this.styles.border} ${this.styles.text1} flex text-center items-center justify-center cursor-grab"
           >
             +
@@ -83,9 +84,7 @@ export default class View_Default implements View_DefaultType{
     </div>
     </div>`
   
-  this.loadDefaultView = () => {
-      document.querySelector("body").innerHTML = this.defaultView;
-    }
+
   }
 
   

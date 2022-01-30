@@ -8,12 +8,6 @@ import View_InnerRings from '../View/View_InnerRings.js';
 import View_Default from '../View/View_Default.js';
 export default class Controller {
     constructor(Model, View) {
-        this.Default = new Controller_Default(View);
-        this.Drag = new Controller_Drag(Model, View);
-        this.Titles = new Controller_Titles(Model, View);
-        this.Text = new Controller_Text(Model, View);
-        this.Setup = new Controller_Setup(Model, View);
-        this.RingListButtons = new Controller_RingListButtons(Model, View, this.Titles.loadDisplayedTitle, this.Text.refreshNodes);
         this.setup = () => {
             Model.Storage.hasColor() ? this._getLoadedColors() : '';
             View.Default.loadDefaultView();
@@ -27,11 +21,17 @@ export default class Controller {
                 this._attachRingListListeners();
             }
             else {
-                this.Default.loadDefaults(this.RingListButtons.attachRingTitleButtonListener, this.Titles.loadDisplayedTitle, this.Text.refreshNodes);
+                this.Default.loadDefaults();
                 Model.Storage.saveAllStorage(Model.ringList, Model.selectedId, View.color);
             }
             this._attachTitles();
         };
+        this.Drag = new Controller_Drag(Model, View);
+        this.Titles = new Controller_Titles(Model, View);
+        this.Text = new Controller_Text(Model, View);
+        this.Setup = new Controller_Setup(Model, View);
+        this.RingListButtons = new Controller_RingListButtons(Model, View, this.Titles.loadDisplayedTitle, this.Text.refreshNodes);
+        this.Default = new Controller_Default(View, this.RingListButtons.attachRingTitleButtonListener, this.Titles.loadDisplayedTitle, this.Text.refreshNodes);
         this._getLoadedColors = () => {
             View.color = Model.Storage.loadColorFromStorage();
             View.InnerRings = new View_InnerRings(View.color);
@@ -40,10 +40,11 @@ export default class Controller {
         this._loadInitialListeners = () => {
             this.Setup.attachColorButtonListener(this.setup);
             this.RingListButtons.attachAddNewRingListener();
-            this.Drag.attachDragListener_Styles();
+            this.Drag.attachDocumentDragListeners();
             this.Drag.attachDragListener_NewInnerRing();
-            this.Setup.attachClickListener_ClearStorage();
+            this.Setup.attachClickListener_ClearStorage(this.setup);
             this.Text.attachDblClickListener();
+            this.Text.attachDeleteListener();
         };
         this._loadModelFromStorage = () => {
             Model.selectedId = Model.Storage.loadSelectedIdFromStorage();
@@ -54,8 +55,7 @@ export default class Controller {
         };
         this._attachRingListListeners = () => {
             this.RingListButtons.attachAllRingTitleButtonListeners();
-            this.RingListButtons.clearSelectedRingListButton();
-            this.RingListButtons.styleSelectedRingListButton();
+            this.RingListButtons.refreshSelectedRingListButtons();
             this.RingListButtons.attachAllDeleteListeners();
         };
         this._attachTitles = () => {

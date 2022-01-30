@@ -1,29 +1,31 @@
 export default class Controller_Setup {
     constructor(Model, View) {
         this.clear = () => document.body.innerHTML = '';
-        this.attachColorButtonListener = (setup) => {
-            let colorbutton = document.getElementById('colorbutton');
-            colorbutton.addEventListener('click', () => {
-                let colorIndex = View.colorList.findIndex(color => color === View.color);
-                if (colorIndex + 1 < View.colorList.length) {
-                    View.color = View.colorList[colorIndex + 1];
-                }
-                else
-                    View.color = View.colorList[0];
-                console.log(View.color);
-                Model.Storage.saveColor(View.color);
+        this.attachClickListener_ClearStorage = (setup) => {
+            document.getElementById("clear").addEventListener("click", () => {
+                this._resetModelAndView();
                 this.clear();
                 setup();
             });
         };
-        this.attachClickListener_ClearStorage = function () {
-            document.getElementById("clear").addEventListener("click", (e) => {
-                e.preventDefault();
-                Model.Storage.clearStorage();
-                Model.resetModelToDefault();
-                View.InnerRings.clearInnerRings();
-                View.RingTitleButtons.clearRingTitleButtons();
+        this.attachColorButtonListener = (setup) => {
+            let colorbutton = document.getElementById('colorbutton');
+            colorbutton.addEventListener('click', () => {
+                this._incrementColors();
+                this.clear();
+                setup();
             });
+        };
+        this._incrementColors = () => {
+            let colorIndex = View.colorList.findIndex(color => color === View.color);
+            View.color = colorIndex % View.colorList.length === 0 ? View.colorList[0] : View.colorList[colorIndex + 1];
+            Model.Storage.saveColor(View.color);
+        };
+        this._resetModelAndView = () => {
+            Model.Storage.clearStorage();
+            Model.resetModelToDefault();
+            View.InnerRings.clearInnerRings();
+            View.RingTitleButtons.clearRingTitleButtons();
         };
     }
 }

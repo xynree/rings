@@ -1,38 +1,27 @@
-import { ViewType } from '../View/View.js'
-export interface Controller_DefaultType {
-
-  /** styles default RingButton and loads Default Listener */
-  loadDefaults: (attachRingTitleButtonListener:Function, loadDisplayedTitle: Function, refreshNodes:Function) => void;
- 
-  /** sets up default ring list button with listener */
-  loadDefaultRingTitleButtonListener: (attachRingTitleButtonListener:Function, loadDisplayedTitle: Function, refreshNodes:Function) => void;
-  
-  /** Highlights default ring button */
-  styleDefaultRingButton: () => void; 
-
-}
+import { ViewType, Controller_DefaultType } from "../Types/Types.js";
 
 export default class Controller_Default implements Controller_DefaultType{
 
-  constructor ( View:ViewType) {
+  loadDefaults: () => void;
+  _loadDefaultRingTitleButtonListener: () => void;
+  _styleDefaultRingButton: () => void;
 
-    this.loadDefaults = (attachRingTitleButtonListener, loadDisplayedTitle, refreshNodes) => {
-      this.styleDefaultRingButton();
-      this.loadDefaultRingTitleButtonListener(attachRingTitleButtonListener, loadDisplayedTitle,refreshNodes);
+  constructor ( View:ViewType, attachRingTitleButtonListener:Function, loadDisplayedTitle: Function, refreshNodes:Function) {
+
+    this.loadDefaults = () => {
+      this._styleDefaultRingButton();
+      this._loadDefaultRingTitleButtonListener();
     }
 
-    this.loadDefaultRingTitleButtonListener = (attachRingTitleButtonListener, loadDisplayedTitle, refreshNodes) => {
+    this._loadDefaultRingTitleButtonListener = () => {
       let ringListButton = document.querySelector('#ringlistbutton');
       let id = parseInt((<HTMLElement>ringListButton.parentNode).id.slice(7));
-      attachRingTitleButtonListener(ringListButton, id, loadDisplayedTitle, refreshNodes)
+      attachRingTitleButtonListener(ringListButton, id)
     }
 
-    this.styleDefaultRingButton = () => {
+    this._styleDefaultRingButton = () => {
       let ringListButton = document.querySelector('#ringlistbutton')
       ringListButton.classList.add(View.Default.styles.highlight)
     }
   }
-  loadDefaults: (attachRingTitleButtonListener:Function, loadDisplayedTitle: Function, refreshNodes:Function) => void;
-  loadDefaultRingTitleButtonListener: (attachRingTitleButtonListener:Function, loadDisplayedTitle: Function,  refreshNodes:Function) => void;
-  styleDefaultRingButton: () => void;
 }

@@ -1,10 +1,4 @@
-
-export interface View_InnerRingsType {
-  addInnerRing: (value:number) => void;
-  clearInnerRings: () => void;
-  removeInnerRingDragPreview: (e:any) => void;
-}
-
+import { View_InnerRingsType } from '../Types/Types.js'
 
 export default class View_InnerRings implements View_InnerRingsType {
 
@@ -36,7 +30,7 @@ export default class View_InnerRings implements View_InnerRingsType {
   
     this.clearInnerRings = function () {
       let outerRing = document.querySelector("#oring");
-      while (outerRing.lastElementChild && outerRing.lastElementChild.id !== "iring") {
+      while (outerRing.lastElementChild && outerRing.lastElementChild.id !=="center_ring") {
         outerRing.removeChild(outerRing.lastElementChild);
       }
     };

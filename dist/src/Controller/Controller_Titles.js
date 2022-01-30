@@ -1,25 +1,29 @@
 export default class Controller_Titles {
     constructor(Model, View) {
+        this.loadDisplayedTitle = () => {
+            const { index, title } = this._findSelectedModelIndexAndTitle();
+            ~index ? document.getElementById('textdisplaytitle').value = title : '';
+        };
         this.attachDisplayedTitleListener = (loadRingListButtonTitles) => {
-            let node = document.getElementById('textdisplaytitle');
-            node.addEventListener("keydown", (e) => {
+            document.getElementById('textdisplaytitle').addEventListener("keydown", (e) => {
                 if (e.code === "Enter") {
-                    console.log('you pressd enter', e.target.value);
-                    Model.ringList.forEach((ring) => {
-                        if (ring.id === Model.selectedId) {
-                            console.log(e.target.value);
-                            ring.title = e.target.value;
-                            Model.Storage.saveAllStorage(Model.ringList, Model.selectedId, View.color);
-                        }
-                    });
-                    node.blur();
+                    this._updateTitle(e);
+                    document.getElementById('textdisplaytitle').blur();
                     loadRingListButtonTitles();
                 }
             });
         };
-        this.loadDisplayedTitle = () => {
+        this._updateTitle = (e) => {
+            Model.ringList.forEach((ring) => {
+                if (ring.id === Model.selectedId) {
+                    ring.title = e.target.value;
+                    Model.Storage.saveAllStorage(Model.ringList, Model.selectedId, View.color);
+                }
+            });
+        };
+        this._findSelectedModelIndexAndTitle = () => {
             let index = Model.ringList.findIndex((ring) => ring.id === Model.selectedId);
-            ~index ? document.getElementById('textdisplaytitle').value = Model.ringList[index].title : '';
+            return { index, title: Model.ringList[index].title };
         };
     }
 }

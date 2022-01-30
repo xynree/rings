@@ -1,46 +1,40 @@
+import { Controller_SetupType, ModelType, ViewType } from '../Types/Types.js'
 
-export interface Controller_SetupType {
-  clear: () => void;
-  attachClickListener_ClearStorage: () => void;
-  attachColorButtonListener: (setup:Function) => void;
-}
+export default class Controller_Setup implements Controller_SetupType {
+  
+  clear = () => document.body.innerHTML = '';
 
-export default class Controller_Setup {
+  attachClickListener_ClearStorage = (setup) => {
+    document.getElementById("clear").addEventListener("click", () => {
+      this._resetModelAndView();
+      this.clear();
+      setup();
+    })
+  }
 
-  constructor(Model, View) {
-
-    this.clear = () => document.body.innerHTML = '';
-
-    this.attachColorButtonListener = (setup) => {
-
-      let colorbutton = document.getElementById('colorbutton');
-      colorbutton.addEventListener('click', () => {
-        let colorIndex = View.colorList.findIndex(color => color === View.color);
-
-        if (colorIndex+1 < View.colorList.length) {
-          View.color = View.colorList[colorIndex+1]
-        } else View.color = View.colorList[0];
-        console.log(View.color);
-        Model.Storage.saveColor(View.color);
-
-        this.clear();
-        setup();
-      })
-    }
-
-    this.attachClickListener_ClearStorage = function () {
-      document.getElementById("clear").addEventListener("click", (e) => {
-        e.preventDefault();
-        Model.Storage.clearStorage();
-        Model.resetModelToDefault();
-        View.InnerRings.clearInnerRings();
-        View.RingTitleButtons.clearRingTitleButtons();
-      });
-    };
-
+  attachColorButtonListener = (setup) => {
+    let colorbutton = document.getElementById('colorbutton');
+    colorbutton.addEventListener('click', () => {
+      this._incrementColors();
+      this.clear();
+      setup();
+    })
   }
   
-  clear: () => void;
-  attachClickListener_ClearStorage: () => void;
-  attachColorButtonListener: (setup:Function) => void;
+  _resetModelAndView: () => void;
+  _incrementColors: () => void;
+
+  constructor(Model:ModelType, View:ViewType) {
+    this._incrementColors = () => {
+      let colorIndex = View.colorList.findIndex(color => color === View.color);
+      View.color = colorIndex % View.colorList.length === 0 ? View.colorList[0]: View.colorList[colorIndex+1]
+      Model.Storage.saveColor(View.color);
+    }
+    this._resetModelAndView = () => {
+      Model.Storage.clearStorage();
+      Model.resetModelToDefault();
+      View.InnerRings.clearInnerRings();
+      View.RingTitleButtons.clearRingTitleButtons();
+    }
+  }
 }

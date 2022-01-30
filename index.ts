@@ -9,7 +9,6 @@ function render() {
   let MyController = new Controller(RingSkeleton, MyView);
 
   MyController.setup();
-
 }
 
 document.addEventListener("DOMContentLoaded", (event) => {
