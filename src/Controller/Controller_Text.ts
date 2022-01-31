@@ -9,6 +9,16 @@ export default class Controller_Text implements Controller_TextType {
     console.log('text nodes refreshed')
   }
 
+  refreshWrapper = (func) => {
+
+    func.apply(this,arguments);
+    
+    this.refreshNodes();
+
+    console.log('text nodes were refreshed')
+    
+  }
+
   attachDblClickListener = () => {
     document.addEventListener('dblclick', (e:any) => {
       if (e.target.id !== 'oring' && e.target.id !== 'innerring') return;
@@ -41,6 +51,8 @@ export default class Controller_Text implements Controller_TextType {
           if (y) node.y = y;
         }});
     }
+
+
 
     this._removeNode = (ringId, textId) => {
 
@@ -165,5 +177,6 @@ export default class Controller_Text implements Controller_TextType {
   _findTextNode: (ringId:number, textId:number) => textNode;
   _removeNode: (ringId:number, textId:number) => void;
   _removeFromDOM: (id:string) => void;
+
    
 }

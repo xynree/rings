@@ -3,7 +3,6 @@
 export interface ModelType {
   Storage: Model_StorageType;
   ViewCommands: Model_ViewCommandsType;
-
   textList: textNode[];
   ringList: ring[];
   selectedId: number;
@@ -59,6 +58,13 @@ export interface ControllerType {
   Text: Controller_TextType;
   /** Functions running on load used in setup() function */
   Setup: Controller_SetupType;
+  /** Function Wrappers */
+  Wrappers: Controller_WrappersType;
+
+}
+
+export interface Controller_WrappersType {
+  saveAllStorageWrapper :(func:Function) => Function
 
 }
 
@@ -82,6 +88,8 @@ export interface Controller_TextType {
 
   /** clears and reloads text */
   refreshNodes: () => void;
+  /** function wrapper for refresh */
+  refreshWrapper: (func:Function) => Function
   /** attaches listeners for adding text on double click */
   attachDblClickListener: () => void;
   /** attaches listener for deleting text on drop */

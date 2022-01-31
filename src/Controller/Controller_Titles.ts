@@ -27,6 +27,8 @@ export default class Controller_Titles implements Controller_TitlesType {
     this._updateTitle = (e) => {
       Model.ringList.forEach((ring:ring) => {
         if (ring.id === Model.selectedId){
+
+          
           ring.title = e.target.value;
           Model.Storage.saveAllStorage(Model.ringList, Model.selectedId, View.color);
         }

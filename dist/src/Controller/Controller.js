@@ -4,6 +4,7 @@ import Controller_RingListButtons from './Controller_RingListButtons.js';
 import Controller_Titles from './Controller_Titles.js';
 import Controller_Text from './Controller_Text.js';
 import Controller_Setup from './Controller_Setup.js';
+import Controller_Wrappers from './Controller_Wrappers.js';
 import View_InnerRings from '../View/View_InnerRings.js';
 import View_Default from '../View/View_Default.js';
 export default class Controller {
@@ -15,14 +16,13 @@ export default class Controller {
             if (Model.Storage.hasStoredRings()) {
                 this._loadModelFromStorage();
                 Model.ViewCommands.loadAllSelectedInnerRingsToDOM(Model.ringList, Model.selectedId);
-                View.RingTitleButtons.clearRingTitleButtons();
+                this.Text.refreshWrapper(View.RingTitleButtons.clearRingTitleButtons);
                 Model.ViewCommands.loadRingTitleButtonsToDOM(Model.ringList);
-                this.Text.refreshNodes();
+                // this.Text.refreshNodes();
                 this._attachRingListListeners();
             }
             else {
-                this.Default.loadDefaults();
-                Model.Storage.saveAllStorage(Model.ringList, Model.selectedId, View.color);
+                this.Wrappers.saveAllStorageWrapper(this.Default.loadDefaults)();
             }
             this._attachTitles();
         };
@@ -32,6 +32,7 @@ export default class Controller {
         this.Setup = new Controller_Setup(Model, View);
         this.RingListButtons = new Controller_RingListButtons(Model, View, this.Titles.loadDisplayedTitle, this.Text.refreshNodes);
         this.Default = new Controller_Default(View, this.RingListButtons.attachRingTitleButtonListener, this.Titles.loadDisplayedTitle, this.Text.refreshNodes);
+        this.Wrappers = new Controller_Wrappers(Model, View);
         this._getLoadedColors = () => {
             View.color = Model.Storage.loadColorFromStorage();
             View.InnerRings = new View_InnerRings(View.color);

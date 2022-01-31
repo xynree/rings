@@ -5,6 +5,11 @@ export default class Controller_Text {
             this._loadTextNodes();
             console.log('text nodes refreshed');
         };
+        this.refreshWrapper = (func) => {
+            func.apply(this, arguments);
+            this.refreshNodes();
+            console.log('text nodes were refreshed');
+        };
         this.attachDblClickListener = () => {
             document.addEventListener('dblclick', (e) => {
                 if (e.target.id !== 'oring' && e.target.id !== 'innerring')
