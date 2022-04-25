@@ -1,8 +1,5 @@
 # Rings
 
-
-## About
-
 A productivity tool for creating concentric circular graphs. This was created as a challenge to use Vanilla Javascript and Object-Oriented Programming principles in order to create a complex, interactive, UI based system. View the deployed version of this project [here](https://xynree.github.io/rings/).
 
 ## Usage
